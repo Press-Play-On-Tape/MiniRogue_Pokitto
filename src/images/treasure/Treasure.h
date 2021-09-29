@@ -10,8 +10,6 @@ namespace Images {
     #include "DiceFace_05.h"
     #include "DiceFace_06.h"
     #include "DiceFace_07.h"
-    #include "Treasure_00.h"
-    #include "Treasure_01_lower.h"
     #include "Treasure_01.h"
     #include "Treasure_02.h"
     #include "Treasure_03.h"

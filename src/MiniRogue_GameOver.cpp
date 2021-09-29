@@ -5,7 +5,7 @@
 //  Initialise state ..
 //
 void Game::gameOver_Init() {
-	printf("gameOver_Init start\n");
+
 	this->gameOverScreenVars.init();
 	this->counter = 0;
 
@@ -136,7 +136,7 @@ void Game::gameOver() {
 		case GameOver_ViewState::HighScore:
 
 			PD::drawBitmap(14, 4, Images::GameOverBanner, 0);
-			
+
 			PD::setCursor(17, 18);
 			PD::print("Skill Level");
 			PD::setCursor(72, 18);

@@ -129,7 +129,7 @@ void Game::treasure() {
   	const bool flash = PC::frameCount % FLASH_DELAY < (FLASH_DELAY / 2);
 
 	this->renderBackground();
-	PD::drawBitmap(11, 0, Images::Treasure_01);
+	PD::drawBitmap(11, 36, Images::Treasure_01);
 
 	switch (this->treasureScreenVars.viewState) {
 

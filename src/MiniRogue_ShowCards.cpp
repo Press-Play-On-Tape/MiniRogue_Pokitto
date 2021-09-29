@@ -61,39 +61,9 @@ void Game::showCards_Init() {
 
 	this->gameState = GameState::ShowCards; 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // this->cards[0] = GameState::Monster_Init;//SJH SJH SJH
 // this->playerStats.hp = 1;//SJH
 // this->playerStats.items[3]++;
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }
@@ -230,7 +200,6 @@ void Game::showCards() {
 			if (room != 0) {
 
 				if ((room > r) || (room == r && this->counter == 0) || (i == 6 && this->showCardsScreenVars.numberOfCardsToDisplay == 6)) {
-// printf("room: %i, r: %i,  counter: %i, i: %i, this->showCardsScreenVars.numberOfCardsToDisplay: %i\n", room ,r, this->counter, i,showCardsScreenVars.numberOfCardsToDisplay);
 
 					PD::setColor(0);
 					PD::fillRect(x + 3, y + 4, 14, 21);
