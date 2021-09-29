@@ -10,7 +10,7 @@ class GameCookie : public Pokitto::Cookie {
 	public:
 
 		uint8_t initialised;
-		uint16_t highScore;
+		uint8_t highScore;
 
 	public:
 

@@ -45,7 +45,6 @@ void Game::title() {
 		
 	}
 
-
 	this->renderTitleBackground(true);
 	PD::drawBitmap(20, 16, Images::TitleScreen_MiniRogue);
 	PD::drawBitmap(10, 56, Images::TitleScreen_Levels);
@@ -57,14 +56,9 @@ void Game::title() {
 		PD::drawBitmap(42, 4, Images::BlinkEyes_1);
 	}
 
-	{
+	static const uint8_t xPos[] = { 10, 33, 65, 87 };
+	static const uint8_t width[] = { 15, 23, 14, 11 };
 
-        static const uint8_t xPos[] = { 10, 33, 65, 87 };
-        static const uint8_t width[] = { 15, 23, 14, 11 };
-
-		PD::drawFastHLine(xPos[gameStats.skillLevel], 63, width[gameStats.skillLevel]);
-
-	}
-
+	PD::drawFastHLine(xPos[gameStats.skillLevel], 63, width[gameStats.skillLevel]);
 
 }

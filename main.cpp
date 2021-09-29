@@ -12,7 +12,7 @@ GameCookie cookie;
 
 Audio::Sink<4, PROJ_AUD_FREQ> audio;
 
-int main(){
+int main(){ 
     
     cookie.begin("MINIROGU", sizeof(cookie), (char*)&cookie);
 

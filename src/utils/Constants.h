@@ -3,7 +3,7 @@
 #define SOUNDS
 #define _DEBUG
 
-#define COOKIE_INITIALISED 15
+#define COOKIE_INITIALISED 16
 
 
 enum class GameState : uint8_t {

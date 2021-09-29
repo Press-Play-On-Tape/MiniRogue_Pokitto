@@ -10,6 +10,7 @@ using PD = Pokitto::Display;
 
 void Game::setup(GameCookie *cookie) {
 
+    this->cookie = cookie;
     this->gameState = GameState::SplashScreen_Init;
 
 }
