@@ -202,7 +202,7 @@ void Game::showCards() {
 				if ((room > r) || (room == r && this->counter == 0) || (i == 6 && this->showCardsScreenVars.numberOfCardsToDisplay == 6)) {
 
 					PD::setColor(0);
-					PD::fillRect(x + 3, y + 4, 14, 21);
+					PD::fillRect(x + 2, y + 2, 17, 24);
 
 					PD::drawBitmap(x + 3, y + 6, Images::Card_Faces[(i == 6 && this->showCardsScreenVars.numberOfCardsToDisplay == 6 ? 7 : static_cast<uint8_t>(this->cards[i]) - 1)]);
 
