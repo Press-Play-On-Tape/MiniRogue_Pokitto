@@ -32,27 +32,6 @@ void Game::renderLargeSpinningCard(int8_t x, int8_t y, uint8_t i) {
 
 }
 
-void Game::renderTitleBackground(bool drawLowerLines) {
-
-    PD::drawBitmap(-9, 0, Images::TitleScreen_Blank);
-    PD::drawBitmap(55, 0, Images::TitleScreen_Blank, NOROT, FLIPH);
-
-    PD::drawBitmap(-4, 20, Images::Flames[this->leftFlame]);
-    PD::drawBitmap(98, 20, Images::Flames[this->rightFlame], NOROT, FLIPH);
-
-    if (PC::frameCount % 3 == 0) { 
-        this->leftFlame = (this->leftFlame + 1) % 4;
-        this->rightFlame = (this->rightFlame + 1) % 4;
-    }
-
-    if (drawLowerLines) {
-        PD::drawFastHLine(8, 49, 94);
-        PD::drawFastHLine(8, 51, 94);
-        this->drawHorizontalDottedLine(8, 100, 53, 1);
-    }
-
-}
-
 void Game::renderMessageBox(uint8_t x, uint8_t y, uint8_t w, uint8_t h) {
 
     PD::setColor(0);

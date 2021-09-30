@@ -76,7 +76,6 @@ class Game {
         void drawMonsterHead(uint8_t const *imageHead);
         uint8_t clamp(int16_t value, uint8_t low, uint8_t high);
 
-        void renderTitleBackground(bool drawLowerLines);
         void renderPlayerStatistics(bool overallFlash, FlashSettings settings);
         void renderSpinningCard(int8_t x, int8_t y, uint8_t i);
         void renderTreasureSpinningCard(int8_t x, int8_t y, uint8_t i);

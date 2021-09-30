@@ -112,7 +112,16 @@ void Game::gameOver() {
 
 	// Render
 
-	this->renderTitleBackground(false);
+    PD::drawBitmap(-9, 0, Images::GameOverSide);
+    PD::drawBitmap(99, 0, Images::GameOverSide, NOROT, FLIPH);
+
+    PD::drawBitmap(-4, 25, Images::Flames[this->leftFlame]);
+    PD::drawBitmap(98, 25, Images::Flames[this->rightFlame], NOROT, FLIPH);
+
+    if (PC::frameCount % 3 == 0) { 
+        this->leftFlame = (this->leftFlame + 1) % 4;
+        this->rightFlame = (this->rightFlame + 1) % 4;
+    }
 
 	switch (this->gameOverScreenVars.viewState) {
 
