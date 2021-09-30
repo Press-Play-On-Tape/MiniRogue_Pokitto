@@ -120,7 +120,7 @@ struct RestingScreenVariables {
 
     void init() {
 
-        this->viewState;
+        this->viewState = Resting_ViewState::SelectReward;
         this->selectedItem = Resting_SelectedItem::Food;
         this->prevSelection = Resting_SelectedItem::Food;
 

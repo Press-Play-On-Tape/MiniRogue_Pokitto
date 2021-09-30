@@ -14,7 +14,7 @@ void Game::resting_Init() {
 	this->restingScreenVars.init();
 	this->counter = 0;
 	this->gameState = GameState::Resting;
-  
+
 }
 
 

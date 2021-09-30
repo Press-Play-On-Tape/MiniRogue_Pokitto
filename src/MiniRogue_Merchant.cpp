@@ -198,16 +198,22 @@ void Game::merchant() {
 	// Render
 
 	this->renderBackground();
-	PD::drawBitmap(50, 0, Images::Merchant_Only);
+	PD::drawBitmap(50, 2, Images::Merchant_Only);
+    PD::drawBitmap(93, 37, Images::Merchant_Flames[this->rightFlame]);
+
+    if (PC::frameCount % 3 == 0) { 
+        this->rightFlame = (this->rightFlame + 1) % 4;
+    }
+
 	PD::setColor(7);
 
 	if (PC::frameCount % 50 < 4) { 
-		PD::drawFastHLine(69, 11, 7); 
+		PD::drawFastHLine(69, 13, 7); 
 	}
 
-	PD::drawFastHLine(46, 60, 51);
-	this->drawHorizontalDottedLine(46, 87, 62, 7);
-	this->drawHorizontalDottedLine(47, 87, 63, 7);
+	PD::drawFastHLine(46, 62, 51);
+	this->drawHorizontalDottedLine(46, 87, 64, 7);
+	this->drawHorizontalDottedLine(47, 87, 65, 7);
 
 	{
 
