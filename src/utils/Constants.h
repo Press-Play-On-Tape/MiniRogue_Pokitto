@@ -137,6 +137,40 @@ struct MonsterStats {
     uint8_t dmg;
 };
 
+enum class SoundEffects : uint8_t {
+    Both,
+    Music,
+    SFX,
+    None
+};
+
+inline SoundEffects &operator++(SoundEffects &c ) {
+    c = static_cast<SoundEffects>( (static_cast<uint8_t>(c) + 1) % 4 );
+    return c;
+}
+
+inline SoundEffects operator++(SoundEffects &c, int ) {
+    SoundEffects result = c;
+    ++c;
+    return result;
+}
+
+inline SoundEffects &operator--(SoundEffects &c ) {
+    if (static_cast<uint8_t>(c) > 0) {
+        c = static_cast<SoundEffects>( (static_cast<uint8_t>(c) - 1) % 4 );
+    }
+    else {
+        c = static_cast<SoundEffects>( 3 );
+    }
+    return c;
+}
+
+inline SoundEffects operator--(SoundEffects &c, int ) {
+    SoundEffects result = c;
+    --c;
+    return result;
+}
+
 constexpr const static uint8_t FLASH_DELAY = 16;
 constexpr const static uint8_t FLASH_COUNTER = 70;
 

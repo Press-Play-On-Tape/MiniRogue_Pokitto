@@ -231,15 +231,15 @@ void Game::merchant() {
 
 		}
 
-		PD::drawBitmap(12, 1, imageName);
+		PD::drawBitmap(13, 0, imageName);
 
 	}
 
 
 	// Highlight ..
 
-	PD::drawFastVLine(13, 7 + (this->merchantScreenVars.selectedItem * 8), 6);
-	PD::drawFastVLine(44, 7 + (this->merchantScreenVars.selectedItem * 8), 6);
+	PD::drawFastVLine(13, 8 + (this->merchantScreenVars.selectedItem * 8), 5);
+	PD::drawFastVLine(44, 8 + (this->merchantScreenVars.selectedItem * 8), 5);
 
 
 	// Error Message ?

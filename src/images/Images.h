@@ -2,6 +2,7 @@
 #pragma once
 
 #include "borders/Borders.h"
+#include "controls/Controls.h"
 #include "ppot/PPOT.h"
 #include "cards/Cards.h"
 #include "dice/Dice.h"

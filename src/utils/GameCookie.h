@@ -11,12 +11,14 @@ class GameCookie : public Pokitto::Cookie {
 
 		uint8_t initialised;
 		uint8_t highScore;
+		SoundEffects sfx = SoundEffects::Both;
 
 	public:
 
 		void initialise() {
 
 			this->initialised = COOKIE_INITIALISED;
+			this->sfx = SoundEffects::Both;
 			this->highScore = 0;
 			this->saveCookie();
 
