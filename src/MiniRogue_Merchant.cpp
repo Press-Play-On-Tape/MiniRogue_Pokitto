@@ -231,7 +231,7 @@ void Game::merchant() {
 
 		}
 
-		PD::drawBitmap(13, 1, imageName);
+		PD::drawBitmap(12, 1, imageName);
 
 	}
 
