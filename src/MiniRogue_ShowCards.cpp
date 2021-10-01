@@ -128,9 +128,9 @@ void Game::showCards() {
 	PD::setCursor(11, 0);
 
 	PD::print("L");
-	PD::print(gameStats.getAreaId() + 1);
+	PD::print(this->gameStats.getAreaId() + 1);
 	PD::print(" A");
-	PD::print(gameStats.level + 1);
+	PD::print(this->gameStats.level + 1);
 
 	switch (gameStats.getAreaId()) {
 
@@ -160,7 +160,7 @@ void Game::showCards() {
 	// Draw background ..
 
 	PD::drawBitmap(13, 70, Images::Health);	
- 	PD::drawBitmap(0, 18, Images::Card_Border);
+ 	PD::drawBitmap(0, 18, Images::Borders[this->gameStats.getAreaId()]);
 
 
 	// Player statistics ..

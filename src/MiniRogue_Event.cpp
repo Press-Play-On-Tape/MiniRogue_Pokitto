@@ -8,7 +8,7 @@ using PS = Pokitto::Sound;
 static const uint8_t Event_NumberOfCardsInFlip = 13; 
 static const uint8_t Event_CardDrawOrder[] = { 2, 1, 0, 2, 0, 1, 0, 1, 2 };
 static const uint8_t Event_ImageX[] = { 13, 39, 65 };
-static const uint8_t Event_ImageY[] = { 15, 8, 15 };
+static const uint8_t Event_ImageY[] = { 6, 14, 6 };
 
 
 // ----------------------------------------------------------------------------
@@ -174,7 +174,7 @@ void Game::event() {
 
 	this->renderBackground();
 
-	PD::drawBitmap(11, 48, Images::Event_Background);
+	PD::drawBitmap(11, 0, Images::Event_Background);
 
 
 	switch (this->eventScreenVars.viewState) {
@@ -182,27 +182,22 @@ void Game::event() {
 		case Event_ViewState::RollDice:
 
 			if (this->eventScreenVars.nextState == Event_ViewState::SelectCard) {
-				PD::setColor(0);
-				PD::fillRect(15, 15, 32, 32);
-				PD::fillRect(65, 15, 32, 32);
-				this->renderLargeSpinningCard(13, 15, this->counter);
-				this->renderLargeSpinningCard(65, 15, this->counter);
+				this->renderLargeSpinningCard(13, 6, this->counter);
+				this->renderLargeSpinningCard(65, 6, this->counter);
 			}
 
-			PD::setColor(0);
-			PD::fillRect(42, 8, 30, 32);
-			this->renderLargeSpinningCard(39, 8, this->counter);
+			this->renderLargeSpinningCard(39, 14, this->counter);
 
 			if (counter < Event_NumberOfCardsInFlip) {
 
 				for (uint8_t i = 0, j = 0; i < Images::Large_Spinning_Inlays[this->counter]; i++, j = j + 2) {
 
 					if (this->eventScreenVars.nextState == Event_ViewState::SelectCard) {
-						PD::drawBitmap(17 + (this->counter * 2) + j, 15, Images::Large_Card_Spinning_Inlay);
-						PD::drawBitmap(69 + (this->counter * 2) + j, 15, Images::Large_Card_Spinning_Inlay);
+						PD::drawBitmap(17 + (this->counter * 2) + j, 6, Images::Large_Card_Spinning_Inlay);
+						PD::drawBitmap(69 + (this->counter * 2) + j, 6, Images::Large_Card_Spinning_Inlay);
 					}
 
-					PD::drawBitmap(43 + (this->counter * 2) + j, 8, Images::Large_Card_Spinning_Inlay);
+					PD::drawBitmap(43 + (this->counter * 2) + j, 14, Images::Large_Card_Spinning_Inlay);
 
 				}
 
@@ -218,6 +213,7 @@ void Game::event() {
 		case Event_ViewState::SkillCheck:
 		case Event_ViewState::SkillCheckResult:
 
+			PD::setColor(7, 1);
 			PD::setCursor(14, 3);
 			PD::print("Enough skill?");
 			PD::setCursor(82, 3);
@@ -271,7 +267,7 @@ void Game::event() {
 
 		case Event_ViewState::UpdateStats:
 
-			renderLargeSpinningCardEvent(39, 8, this->eventScreenVars.dice[this->eventScreenVars.selection]);
+			renderLargeSpinningCardEvent(39, 14, this->eventScreenVars.dice[this->eventScreenVars.selection]);
 			PD::setCursor(15, 0);
 			printEventName(this->eventScreenVars.dice[this->eventScreenVars.selection]);
 
@@ -300,7 +296,7 @@ void Game::event() {
 
 void Game::printEventName(uint8_t dice) {
 
-	PD::setColor(7);
+	PD::setColor(7, 1);
 
 	switch (dice - 1) {
 
@@ -334,8 +330,6 @@ void Game::printEventName(uint8_t dice) {
 
 void Game::renderLargeSpinningCardEvent(uint8_t x, uint8_t y, uint8_t dice) {
 
-	PD::setColor(0);
-	PD::fillRect(x, y, 32, 32);
 	this->renderLargeSpinningCard(x, y, 0);
 	PD::drawBitmap(x + 2, y + 2, Images::Event_Dice[dice - 1]);
 

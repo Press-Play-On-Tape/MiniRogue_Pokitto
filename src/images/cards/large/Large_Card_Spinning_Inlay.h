@@ -5,7 +5,7 @@
 inline constexpr uint8_t Large_Card_Spinning_Inlay[] = {
 2, 32,
 0xee,
-0x77,
+0xbb,
 0x00,
 0x00,
 0x70,
@@ -34,6 +34,6 @@ inline constexpr uint8_t Large_Card_Spinning_Inlay[] = {
 0x07,
 0x00,
 0x00,
-0x77,
+0x33,
 0xee
 };

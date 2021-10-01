@@ -114,14 +114,14 @@ void Game::renderPlayerStatistics(bool overallFlash, FlashSettings settings) {
 
         if (flag && flash) {
             PD::setColor(7);
-            PD::fillRect(24 + ((x % 3) * 26), 70 + (x < 3 ? 0 : 9), (val < 10 ? 5 : 10), 6);
+            PD::fillRect(23 + ((x % 3) * 26), 70 + (x < 3 ? 0 : 9), (val < 10 ? 5 : 10), 6);
             PD::setColor(0, 7);
         }
         else {
             PD::setColor(7, 0);
         }
 
-        PD::setCursor(25 + ((x % 3) * 26), 71 + (x < 3 ? 0 : 9));
+        PD::setCursor(24 + ((x % 3) * 26), 71 + (x < 3 ? 0 : 9));
         PD::print(static_cast<uint16_t>(val));
         PD::setColor(7, 0);
 
