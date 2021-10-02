@@ -18,19 +18,24 @@ struct EventScreenVariables {
 
     Event_ViewState viewState = Event_ViewState::SkillCheck;
     Event_ViewState nextState = Event_ViewState::SkillCheck;
-    uint8_t skillCheck = 0;
+    uint8_t skillCheck[6];
     uint8_t dice[3] = { 0, 0, 0 };
     uint8_t selection = 0;
+    bool hasSkill = false;
 
     void init() {
 
         this->viewState = Event_ViewState::SkillCheck;
         this->nextState = Event_ViewState::SkillCheck;
-        this->skillCheck = 0;
         this->dice[0] = 0;
         this->dice[1] = 0;
         this->dice[2] = 0;
         this->selection = 0;
+        this->hasSkill = false;
+
+        for (uint8_t i = 0; i < 6; i++) {
+            this->skillCheck[i] = 0;
+        }
 
     }
 
@@ -132,11 +137,17 @@ struct TrapScreenVariables {
 
     Trap_ViewState viewState;
     uint8_t dice;
+    uint8_t skillCheck[6];
+    bool hasSkill = false;    
 
     void init() {
 
         this->viewState = Trap_ViewState::SkillCheck;
         this->dice = 0;
+
+        for (uint8_t i = 0; i < 6; i++) {
+            this->skillCheck[i] = 0;
+        }
 
     }
 
@@ -334,7 +345,7 @@ struct GameStats {
 
         if ((room == 6) && (level == 13)) {
 
-            return GameState::Winner;
+            return GameState::Winner_Init;
 
         }
         else {

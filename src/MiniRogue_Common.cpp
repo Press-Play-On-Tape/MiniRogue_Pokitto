@@ -142,9 +142,10 @@ void Game::renderPlayerStatistics(bool overallFlash, FlashSettings settings) {
 
         }
 
-        PD::setColor(7);
+        PD::setColor(6);
         PD::drawRect(89, 68, 8, 8);
         PD::drawRect(89, 78, 8, 8);
+        PD::setColor(7);
 
     }
 

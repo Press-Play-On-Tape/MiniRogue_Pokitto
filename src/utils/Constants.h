@@ -18,7 +18,7 @@ enum class GameState : uint8_t {
     MonsterFromEvent_Init   = 8,
     GamePlay                = 9,
     ShowCards_Init          = 10,
-    Winner                  = 11,
+    Winner_Init             = 11,
     GameOver_Init           = 12,
     SplashScreen_Init       = 13,
     SplashScreen            = 14,
@@ -35,6 +35,7 @@ enum class GameState : uint8_t {
     BossMonster             = 24,
     MonsterFromEvent        = 25,
     GameOver                = 26,
+    Winner                  = 27,
 
 };
 

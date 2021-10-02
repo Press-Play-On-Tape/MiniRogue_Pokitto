@@ -23,13 +23,21 @@ void Game::trap() {
 
 		case Trap_ViewState::SkillCheck:
 
-			if (PC::buttons.pressed(BTN_A)) { this->trapScreenVars.dice = random(1, 7); counter = sizeof(DiceDelay); }
+			if (PC::buttons.pressed(BTN_A)) { 
+				for (uint8_t i = 0; i < this->playerStats.xpTrack; i++) {
+					this->trapScreenVars.skillCheck[i] = random(1, 7); 
+				}
+				counter = sizeof(DiceDelay); 
+			}
 
-				if (this->counter < sizeof(DiceDelay)) {
+			if (this->counter < sizeof(DiceDelay)) {
 
 				if (PC::frameCount % DiceDelay[this->counter] == 0) {
 
-					this->trapScreenVars.dice = random(1, 7);
+					for (uint8_t i = 0; i < this->playerStats.xpTrack; i++) {
+						this->trapScreenVars.skillCheck[i] = random(1, 7); 
+					}
+
 					this->counter++;
 					PC::frameCount = 0;
 
@@ -41,6 +49,10 @@ void Game::trap() {
 				this->counter = 0;
 				PC::frameCount = 0;
 				this->trapScreenVars.viewState = Trap_ViewState::SkillCheckResult;
+				
+				for (uint8_t i = 0; i < this->playerStats.xpTrack; i++) {
+					if (this->trapScreenVars.skillCheck[i] >= 5) this->trapScreenVars.hasSkill = true;
+				}
 
 			}
 			break;
@@ -58,7 +70,7 @@ void Game::trap() {
 
 				if (PC::buttons.pressed(BTN_A)) {
 
-					if (this->trapScreenVars.dice <= playerStats.xpTrack) {
+					if (this->trapScreenVars.hasSkill) {
 
 						this->gameState = gameStats.incRoom(playerStats); 
 
@@ -173,44 +185,51 @@ void Game::trap() {
 
 		case Trap_ViewState::SkillCheck:
 		case Trap_ViewState::SkillCheckResult:
+			{
+				uint8_t left = 56 - ((10 * this->playerStats.xpTrack) / 2);
 
-			PD::setCursor(14, 3);
-			PD::print("Evade trap?");
-			PD::setCursor(77, 3);
-			PD::drawBitmap(62, 2, Images::Dice[this->trapScreenVars.dice]);
+				PD::setCursor(this->trapScreenVars.viewState == Trap_ViewState::SkillCheck ? 35 : 24, 3);
+				PD::print("Evade trap?");
+				PD::setCursor(74, 3);
 
-			if (this->trapScreenVars.viewState == Trap_ViewState::SkillCheckResult) {
-
-				if (this->counter < FLASH_COUNTER && flash) PD::setColor(0);
-
-				if (this->trapScreenVars.dice <= playerStats.xpTrack) {
-
-					if ((this->counter < FLASH_COUNTER) && flash) {
-						
-						PD::setColor(7);
-						PD::fillRect(75, 2, 15, 7);
-						PD::setColor(0, 7);
-
-					}
-					
-					PD::print("Yes");
-
-				}
-				else {
-
-					if ((this->counter < FLASH_COUNTER) && flash) {
-						
-						PD::setColor(7);
-						PD::fillRect(75, 2, 11, 7);
-						PD::setColor(0, 7);
-
-					}
-					
-					PD::print("No");
-
+				for (uint8_t i = 0; i < this->playerStats.xpTrack; i++) {
+					PD::drawBitmap(left + (i * 10), 12, Images::Dice[this->trapScreenVars.skillCheck[i]]);
 				}
 
-				PD::setColor(7, 0);
+				if (this->trapScreenVars.viewState == Trap_ViewState::SkillCheckResult) {
+
+					if (this->counter < FLASH_COUNTER && flash) PD::setColor(0);
+
+					if (this->trapScreenVars.hasSkill) {
+
+						if ((this->counter < FLASH_COUNTER) && flash) {
+							
+							PD::setColor(7);
+							PD::fillRect(72, 2, 15, 7);
+							PD::setColor(0, 7);
+
+						}
+						
+						PD::print("Yes");
+
+					}
+					else {
+
+						if ((this->counter < FLASH_COUNTER) && flash) {
+							
+							PD::setColor(7);
+							PD::fillRect(72, 2, 11, 7);
+							PD::setColor(0, 7);
+
+						}
+						
+						PD::print("No");
+
+					}
+
+					PD::setColor(7, 0);
+
+				}
 
 			}
 

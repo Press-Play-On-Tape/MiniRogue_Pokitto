@@ -61,7 +61,7 @@ void Game::showCards_Init() {
 
 	this->gameState = GameState::ShowCards; 
 
-// this->cards[0] = GameState::Monster_Init;//SJH SJH SJH
+// this->cards[0] = GameState::Trap_Init;//SJH SJH SJH
 // this->playerStats.hp = 1;//SJH
 // this->playerStats.items[3]++;
 

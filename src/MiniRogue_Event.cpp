@@ -31,13 +31,20 @@ void Game::event() {
 
 		case Event_ViewState::SkillCheck:
 
-			if (PC::buttons.pressed(BTN_A)) { this->eventScreenVars.skillCheck = random(1, 7); counter = FLASH_COUNTER; }
+			if (PC::buttons.pressed(BTN_A)) { 
+				for (uint8_t i = 0; i < this->playerStats.xpTrack; i++) {
+					this->eventScreenVars.skillCheck[i] = random(1, 7); 
+				}
+				counter = FLASH_COUNTER; 
+			}
 
 			if (this->counter < sizeof(DiceDelay)) {
 
 				if (PC::frameCount % DiceDelay[this->counter] == 0) {
 
-					this->eventScreenVars.skillCheck = random(1, 7);
+					for (uint8_t i = 0; i < this->playerStats.xpTrack; i++) {
+						this->eventScreenVars.skillCheck[i] = random(1, 7);
+					}
 					this->counter++;
 					PC::frameCount = 0;
 
@@ -49,7 +56,7 @@ void Game::event() {
 				this->counter = 0;
 				PC::frameCount = 0;
 				this->eventScreenVars.viewState = Event_ViewState::SkillCheckResult;
-
+					
 			}
 			break;
 
@@ -68,8 +75,12 @@ void Game::event() {
 
 					this->counter = 0;
 					this->eventScreenVars.viewState = Event_ViewState::RollDice;
+					
+					for (uint8_t i = 0; i < this->playerStats.xpTrack; i++) {
+						if (this->eventScreenVars.skillCheck[i] >= 5) this->eventScreenVars.hasSkill = true;
+					}
 
-					if (this->eventScreenVars.skillCheck <= playerStats.xpTrack) {
+					if (this->eventScreenVars.hasSkill) {
 
 						this->eventScreenVars.nextState = Event_ViewState::SelectCard;
 
@@ -212,37 +223,45 @@ void Game::event() {
 
 		case Event_ViewState::SkillCheck:
 		case Event_ViewState::SkillCheckResult:
+			{
 
-			PD::setColor(7, 1);
-			PD::setCursor(14, 3);
-			PD::print("Enough skill?");
-			PD::setCursor(82, 3);
-			PD::drawBitmap(67, 2, Images::Dice[this->eventScreenVars.skillCheck]);
+				uint8_t left = 56 - ((10 * this->playerStats.xpTrack) / 2);
 
-			if (eventScreenVars.viewState == Event_ViewState::SkillCheckResult) {
+				PD::setColor(7, 1);
+				PD::setCursor(this->eventScreenVars.viewState == Event_ViewState::SkillCheck ? 30 : 21, 3);
+				PD::print("Enough skill?");
+				PD::setCursor(77, 3);
 
-				if (this->counter < FLASH_COUNTER && flash) {
-
-					PD::setColor(7);
-					PD::fillRect(80, 2, ((this->eventScreenVars.skillCheck <= playerStats.xpTrack) ? 15 : 11), 7);
-					PD::setColor(0, 7);
-
+				for (uint8_t i = 0; i < this->playerStats.xpTrack; i++) {
+					PD::drawBitmap(left + (i * 10), 12, Images::Dice[this->eventScreenVars.skillCheck[i]]);
 				}
 
-				if (this->eventScreenVars.skillCheck <= playerStats.xpTrack) {
+				if (eventScreenVars.viewState == Event_ViewState::SkillCheckResult) {
 
-					PD::print("Yes");
-					PD::setColor(7);
+					if (this->counter < FLASH_COUNTER && flash) {
+
+						PD::setColor(7);
+						PD::fillRect(75, 2, (this->eventScreenVars.hasSkill ? 15 : 11), 7);
+						PD::setColor(0, 7);
+
+					}
+
+					if (this->eventScreenVars.hasSkill) {
+
+						PD::print("Yes");
+						PD::setColor(7);
+
+					}
+					else {
+
+						PD::print("No");
+						PD::setColor(7);
+
+					}
+
+					PD::setColor(7, 0);
 
 				}
-				else {
-
-					PD::print("No");
-					PD::setColor(7);
-
-				}
-
-				PD::setColor(7, 0);
 
 			}
 
@@ -321,7 +340,7 @@ void Game::printEventName(uint8_t dice) {
 			break;
 
 		case 5:
-			PD::print("Monster         5 DMG");
+			PD::print("  Monster       5 DMG");		
 			break;
 
 	}
