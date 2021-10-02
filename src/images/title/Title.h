@@ -23,6 +23,11 @@ namespace Images {
     #include "TitleScreen_Levels_02.h"
     #include "TitleScreen_Levels_03.h"
 
+    #include "Cursor_00.h"
+    #include "Cursor_01.h"
+    #include "Cursor_02.h"
+    #include "Cursor_03.h"
+
     const uint8_t * const Flames[] = { 
         Flames_01,
         Flames_02,
@@ -35,6 +40,13 @@ namespace Images {
         TitleScreen_Levels_01,
         TitleScreen_Levels_02,
         TitleScreen_Levels_03
+    };
+
+    const uint8_t * const Title_Cursors[] = { 
+        Cursor_00,
+        Cursor_01,
+        Cursor_02,
+        Cursor_03
     };
 
 };

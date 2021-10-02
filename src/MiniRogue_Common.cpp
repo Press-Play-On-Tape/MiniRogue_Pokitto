@@ -37,11 +37,15 @@ void Game::renderMessageBox(uint8_t x, uint8_t y, uint8_t w, uint8_t h) {
     PD::setColor(0);
     PD::fillRect(x + 1, y, w - 2, h - 1);
     PD::fillRect(x, y + 1, w, h - 3);
-    PD::setColor(7);
+    PD::setColor(9);
     PD::drawFastHLine(x + 3, y + 2, w - 6);
     PD::drawFastHLine(x + 3, y + h - 3, w - 6);
     PD::drawFastVLine(x + 2, y + 3, h - 7);
     PD::drawFastVLine(x + w - 3, y + 3, h - 7);
+
+    PD::drawBitmap(x + 2, y + 2, Images::Dialogue_TL);
+    PD::drawBitmap(x + w - 7, y + h - 7, Images::Dialogue_BR);
+    PD::setColor(7);
 
 }
 

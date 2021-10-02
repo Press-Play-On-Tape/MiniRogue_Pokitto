@@ -175,7 +175,7 @@ constexpr const static uint8_t FLASH_DELAY = 16;
 constexpr const static uint8_t FLASH_COUNTER = 70;
 
 constexpr const static uint8_t MIN_LEVEL = 0;
-constexpr const static uint8_t MAX_LEVEL = 3;
+constexpr const static uint8_t MAX_LEVEL = 2;
 constexpr const static uint8_t UPLOAD_DELAY = 16;
 
 constexpr const static uint8_t WINNER_LEVEL = 5;

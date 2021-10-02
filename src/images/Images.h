@@ -20,5 +20,7 @@ namespace Images {
     #include "Health.h"
     #include "Marker.h"
     #include "Message_PlayerDied.h"
+    #include "Dialogue_TL.h"
+    #include "Dialogue_BR.h"
 
 };

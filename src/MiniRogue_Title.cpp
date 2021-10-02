@@ -28,7 +28,7 @@ void Game::title() {
 	if (PC::buttons.pressed(BTN_LEFT) && this->gameStats.skillLevel > MIN_LEVEL)        --this->gameStats.skillLevel;
 	if (PC::buttons.pressed(BTN_RIGHT) && this->gameStats.skillLevel < MAX_LEVEL + 1)   ++this->gameStats.skillLevel;
 
-	if (PC::buttons.pressed(BTN_A) && this->gameStats.skillLevel < MAX_LEVEL) {
+	if (PC::buttons.pressed(BTN_A) && this->gameStats.skillLevel <= MAX_LEVEL) {
 
 		constexpr const static uint8_t ELEMENTS_PER_ROW = 4;
 
@@ -46,7 +46,7 @@ void Game::title() {
 	}
 
 
-	if (this->gameStats.skillLevel == 4) {
+	if (this->gameStats.skillLevel == MAX_LEVEL + 1) {
 			
 		if (PC::buttons.pressed(BTN_UP)) {
 
@@ -98,42 +98,41 @@ void Game::title() {
         this->rightFlame = (this->rightFlame + 1) % 4;
     }
 
-	PD::drawFastHLine(8, 55, 94);
-	PD::drawFastHLine(8, 57, 94);
-	this->drawHorizontalDottedLine(8, 100, 62, 1);
+	PD::setColor(7);
+	PD::drawFastHLine(10, 68, 90);
+	PD::drawFastHLine(10, 70, 90);
+	this->drawHorizontalDottedLine(10, 98, 72, 6);
 
-	PD::drawBitmap(20, 20, Images::TitleScreen_MiniRogue);
-	PD::drawBitmap(10, 66, Images::TitleScreen_Levels);
+	PD::drawBitmap(20, 24, Images::TitleScreen_MiniRogue);
+	PD::drawBitmap(9, 76, Images::TitleScreen_Levels);
 
 	if (PC::frameCount % 70 < 7) {
 		PD::drawBitmap(42, 8, Images::BlinkEyes_2);
 		PD::drawBitmap(60, 8, Images::BlinkEyes_2, NOROT, FLIPH);
 	}
 
-	static const uint8_t xPos[] = { 10, 33, 65, 87 };
-	static const uint8_t width[] = { 15, 23, 14, 11 };
+	static const uint8_t xPos[] = { 9, 30, 60, 80 };
 
-	if (this->gameStats.skillLevel <= 3) {
+	if (this->gameStats.skillLevel <= MAX_LEVEL) {
 
-		PD::drawBitmap(xPos[gameStats.skillLevel], 66, Images::Title_Levels[this->gameStats.skillLevel]);
-		PD::drawFastHLine(xPos[gameStats.skillLevel], 72, width[this->gameStats.skillLevel]);
+		PD::drawBitmap(xPos[gameStats.skillLevel], 76, Images::Title_Levels[this->gameStats.skillLevel]);
 
 		switch (this->cookie->sfx) {
 
 			case SoundEffects::Music:
-				PD::drawBitmap(70, 76, Images::Sound_Music_Grey);
+				PD::drawBitmap(80, 76, Images::Sound_Music_Grey);
 				break;
 
 			case SoundEffects::SFX:
-				PD::drawBitmap(70, 67, Images::Sound_SFX_Grey);
+				PD::drawBitmap(80, 76, Images::Sound_SFX_Grey);
 				break;
 
 			case SoundEffects::Both:
-				PD::drawBitmap(70, 76, Images::Sound_Both_Grey);
+				PD::drawBitmap(80, 76, Images::Sound_Both_Grey);
 				break;
 
 			default:
-				PD::drawBitmap(70, 76, Images::Sound_None_Grey);
+				PD::drawBitmap(80, 76, Images::Sound_None_Grey);
 				break;
 
 		}
@@ -144,23 +143,25 @@ void Game::title() {
 		switch (this->cookie->sfx) {
 
 			case SoundEffects::Music:
-				PD::drawBitmap(70, 76, Images::Sound_Music_White);
+				PD::drawBitmap(80, 76, Images::Sound_Music_White);
 				break;
 
 			case SoundEffects::SFX:
-				PD::drawBitmap(70, 76, Images::Sound_SFX_White);
+				PD::drawBitmap(80, 76, Images::Sound_SFX_White);
 				break;
 
 			case SoundEffects::Both:
-				PD::drawBitmap(70, 76, Images::Sound_Both_White);
+				PD::drawBitmap(80, 76, Images::Sound_Both_White);
 				break;
 
 			default:
-				PD::drawBitmap(70, 76, Images::Sound_None_White);
+				PD::drawBitmap(80, 76, Images::Sound_None_White);
 				break;
 
 		}
 
 	}
+
+	PD::drawBitmap(xPos[gameStats.skillLevel] - 2, 82, Images::Title_Cursors[this->gameStats.skillLevel]);
 
 }
