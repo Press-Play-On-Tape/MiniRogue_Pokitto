@@ -57,6 +57,10 @@ void Game::event() {
 				PC::frameCount = 0;
 				this->eventScreenVars.viewState = Event_ViewState::SkillCheckResult;
 					
+				for (uint8_t i = 0; i < this->playerStats.xpTrack; i++) {
+					if (this->eventScreenVars.skillCheck[i] >= 5) this->eventScreenVars.hasSkill = true;
+				}
+					
 			}
 			break;
 
@@ -75,10 +79,6 @@ void Game::event() {
 
 					this->counter = 0;
 					this->eventScreenVars.viewState = Event_ViewState::RollDice;
-					
-					for (uint8_t i = 0; i < this->playerStats.xpTrack; i++) {
-						if (this->eventScreenVars.skillCheck[i] >= 5) this->eventScreenVars.hasSkill = true;
-					}
 
 					if (this->eventScreenVars.hasSkill) {
 
@@ -236,7 +236,7 @@ void Game::event() {
 					PD::drawBitmap(left + (i * 10), 12, Images::Dice[this->eventScreenVars.skillCheck[i]]);
 				}
 
-				if (eventScreenVars.viewState == Event_ViewState::SkillCheckResult) {
+				if (this->eventScreenVars.viewState == Event_ViewState::SkillCheckResult) {
 
 					if (this->counter < FLASH_COUNTER && flash) {
 

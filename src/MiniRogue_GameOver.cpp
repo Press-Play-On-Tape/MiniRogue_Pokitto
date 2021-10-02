@@ -144,7 +144,7 @@ void Game::gameOver() {
 
 		case GameOver_ViewState::HighScore:
 
-			PD::drawBitmap(14, 4, Images::GameOverBanner, 0);
+			PD::drawBitmap(15, 4, Images::GameOverBanner, 0);
 
 			PD::setCursor(17, 18);
 			PD::print("Skill Level");

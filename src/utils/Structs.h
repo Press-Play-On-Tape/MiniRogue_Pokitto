@@ -144,6 +144,7 @@ struct TrapScreenVariables {
 
         this->viewState = Trap_ViewState::SkillCheck;
         this->dice = 0;
+        this->hasSkill = false;    
 
         for (uint8_t i = 0; i < 6; i++) {
             this->skillCheck[i] = 0;

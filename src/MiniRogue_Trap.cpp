@@ -49,7 +49,7 @@ void Game::trap() {
 				this->counter = 0;
 				PC::frameCount = 0;
 				this->trapScreenVars.viewState = Trap_ViewState::SkillCheckResult;
-				
+
 				for (uint8_t i = 0; i < this->playerStats.xpTrack; i++) {
 					if (this->trapScreenVars.skillCheck[i] >= 5) this->trapScreenVars.hasSkill = true;
 				}
