@@ -78,16 +78,10 @@ void Game::gameOver() {
 		switch (this->gameOverScreenVars.clearScores) {
 
 			case 21 ... 60:
-				#ifdef USE_LEDS             
-				arduboy.setRGBled(RED_LED, 128 - (this->gameOverScreenVars.clearScores * 2));
-				#endif
 				break;
 
 			case 61:
 				this->gameOverScreenVars.clearScores = 0;
-				#ifdef USE_LEDS             
-				arduboy.setRGBled(RED_LED, 0);
-				#endif
 				this->cookie->initialise();
 				this->gameOverScreenVars.highScore = 0;
 				this->gameOverScreenVars.score = 0;
@@ -100,9 +94,6 @@ void Game::gameOver() {
 
 		if (this->gameOverScreenVars.clearScores > 0) {
 		
-			#ifdef USE_LEDS             
-			arduboy.setRGBled(RED_LED, 0);
-			#endif
 			this->gameOverScreenVars.clearScores = 0;
 
 		}
@@ -196,12 +187,13 @@ void Game::gameOver() {
 			PD::setCursor(92, 71);
 			this->renderThreeDigitNumeric(this->gameOverScreenVars.highScore);
 
+			PD::setColor(6);
 			PD::drawFastHLine(7, 67, 96);
-		
+			PD::setColor(7);
+
 			break;
 
 	}
-
 
 }
 

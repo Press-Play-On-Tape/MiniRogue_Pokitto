@@ -66,10 +66,6 @@ void Game::fightMonster() {
 					this->fightMonsterScreenVars.viewState = this->fightMonsterScreenVars.nextState;
 					PC::frameCount = 0;
 
-					#ifdef USE_LEDS
-					arduboy.setRGBled(RED_LED, 0);
-					#endif
-
 				}
 
 			}
@@ -136,12 +132,16 @@ void Game::fightMonster() {
 
 					case FightMonster_SelectedElement::Action:
 						{
-							uint8_t dmg = getMonsterDMG();
+							uint8_t dmg = this->getMonsterDMG();
+
+							if (dmg > 0) {
+								this->playSoundEffect(SoundEffect::FistPunch2);
+							}
 
 							this->fightMonsterScreenVars.monsterStats.hp = clamp(static_cast<int16_t>(this->fightMonsterScreenVars.monsterStats.hp - dmg), static_cast<uint8_t>(0), static_cast<uint8_t>(30));	
 							this->setDiceSelection(false);
 
-							if ( this->fightMonsterScreenVars.monsterStats.hp == 0) { 
+							if (this->fightMonsterScreenVars.monsterStats.hp == 0) { 
 
 								this->monsterIsDead();
 
@@ -271,6 +271,12 @@ void Game::fightMonster() {
 
 		case FightMonster_ViewState::Defend:
 
+			if (this->fightMonsterScreenVars.monsterStats.dmg - playerStats.armour > 0) {
+
+				this->playSoundEffect(SoundEffect::FistPunch1);
+
+			}
+
 			playerStats.decHP(clamp(static_cast<int16_t>(this->fightMonsterScreenVars.monsterStats.dmg - playerStats.armour), static_cast<uint8_t>(0), static_cast<uint8_t>(50)));
 
 			if (playerStats.hp == 0) {
@@ -334,11 +340,7 @@ void Game::fightMonster() {
 					this->playTheme(this->gameStats.getAreaId());
 					
 				}
-				
-				#ifdef USE_LEDS
-				arduboy.setRGBled(RED_LED, 0);
-				#endif
-
+			
 			}
 
 			break;
@@ -347,11 +349,6 @@ void Game::fightMonster() {
 
 			if (PC::buttons.pressed(BTN_A)) {
 				this->gameState = GameState::GameOver_Init;
-
-				#ifdef USE_LEDS
-				arduboy.setRGBled(RED_LED, 0);
-				#endif
-
 			}
 
 			break;
@@ -429,7 +426,7 @@ void Game::drawMonsterHead(uint8_t const *imageHead) {
 
 	uint8_t head_inc = (this->fightMonsterScreenVars.monsterPosition == 1 || this->fightMonsterScreenVars.monsterPosition == 2 ? 1 : 0);
 
-	PD::drawBitmap(63, 0 + head_inc, imageHead);
+	PD::drawBitmap(62, 0 + head_inc, imageHead);
 
 }
 
@@ -460,60 +457,57 @@ void Game::renderFightMonster() {
 	// Draw background ..
 
   	this->renderBackground();
-	PD::drawBitmap(14, 1, Images::Monster_Stats);
-	PD::drawBitmap(54, 19, Images::Monster_LowerBody);
-	PD::drawBitmap(44, 1 + hand_inc, Images::Monster_Sword, NOROT, FLIPH);
 
-	{
+	switch (this->fightMonsterScreenVars.viewState) {
 
-		switch (this->gameState) {
+		case FightMonster_ViewState::MonsterDead:
+		case FightMonster_ViewState::MonsterDead_Wait:
+			break;
 
-			case GameState::BossMonster:
+		default:
+			PD::drawBitmap(14, 1, Images::Monster_Stats);
+			PD::drawBitmap(53, 19, Images::Monster_LowerBody);
+			PD::drawBitmap(43, 1 + hand_inc, Images::Monster_Sword, NOROT, FLIPH);
 
-				this->drawMonsterHead(Images::BossMonster_Head);
-				PD::drawBitmap(105, 1 + hand_inc, Images::Monster_Sword);				
-				
-				break;
+			switch (this->gameState) {
 
-			default:
+				case GameState::BossMonster:
 
-				this->drawMonsterHead(Images::Monster_Head);
-				PD::drawBitmap(84, 18 + hand_inc, Images::Monster_Shield);
+					this->drawMonsterHead(Images::BossMonster_Head);
+					PD::drawBitmap(104, 1 + hand_inc, Images::Monster_Sword);				
+					
+					break;
 
-				break;
+				default:
 
-		}
+					this->drawMonsterHead(Images::Monster_Head);
+					PD::drawBitmap(83, 18 + hand_inc, Images::Monster_Shield);
 
-	}
+					break;
 
-
-	// Monster statistics ..
-	{
-
-		if (this->fightMonsterScreenVars.viewState == FightMonster_ViewState::HighlightMonsterStats) {
-
-			if (flash) {
-				PD::setColor(7);
-				PD::fillRect(31, 1, ( this->fightMonsterScreenVars.monsterStats.hp < 10 ? 5 : 10), 6);
-				PD::setColor(0, 7);
-				#ifdef USE_LEDS
-				//arduboy.setRGBled(0, 32, 0);
-				#endif
-			}
-			else {
-
-				#ifdef USE_LEDS
-				//arduboy.setRGBled(0, 0, 0);
-				#endif
 			}
 
-		}
+			// Monster statistics ..
+			{
 
-		PD::setCursor(32, 2);
-		PD::print(static_cast<uint16_t>(this->fightMonsterScreenVars.monsterStats.hp));
-		PD::setColor(7, 0);
-		PD::setCursor(32, 10);
-		PD::print(static_cast<uint16_t>(this->fightMonsterScreenVars.monsterStats.dmg));
+				if (this->fightMonsterScreenVars.viewState == FightMonster_ViewState::HighlightMonsterStats) {
+
+					if (flash) {
+						PD::setColor(7);
+						PD::fillRect(31, 1, ( this->fightMonsterScreenVars.monsterStats.hp < 10 ? 5 : 10), 6);
+						PD::setColor(0, 7);
+					}
+
+				}
+
+				PD::setCursor(32, 2);
+				PD::print(static_cast<uint16_t>(this->fightMonsterScreenVars.monsterStats.hp));
+				PD::setColor(7, 0);
+				PD::setCursor(32, 10);
+				PD::print(static_cast<uint16_t>(this->fightMonsterScreenVars.monsterStats.dmg));
+
+			}
+			break;
 
 	}
 
@@ -672,12 +666,6 @@ void Game::renderFightMonster() {
 	// Player statistics ..
 
 	const FlashSettings settings = ((this->fightMonsterScreenVars.viewState == FightMonster_ViewState::HighlightPlayerStats) ? FlashSettings::FlashHP : FlashSettings::None);
-
-	#ifdef USE_LEDS
-	if (this->fightMonsterScreenVars.viewState == FightMonster_ViewState::HighlightPlayerStats) {
-		arduboy.setRGBled(RED_LED, (flash ? 32 : 0));
-	}
-	#endif
 	this->renderPlayerStatistics(true, settings);
 
 

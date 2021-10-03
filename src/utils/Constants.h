@@ -143,6 +143,9 @@ enum class SoundEffect : uint8_t {
     RollDice,
     Positive,
     Negative,
+    FistPunch1,
+    FistPunch2,
+    Welcome,
 };
 
 enum class SoundEffects : uint8_t {

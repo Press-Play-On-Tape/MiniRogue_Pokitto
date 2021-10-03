@@ -14,6 +14,8 @@ void Game::merchant_Init() {
 	this->merchantScreenVars.init();
 	this->counter = 0;
 	this->gameState = GameState::Merchant;
+
+	this->playSoundEffect(SoundEffect::Welcome);
   
 }
 

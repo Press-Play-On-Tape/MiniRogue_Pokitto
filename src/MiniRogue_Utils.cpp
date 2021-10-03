@@ -70,6 +70,18 @@ void Game::playSoundEffect(SoundEffect soundEffect) {
                 case SoundEffect::Negative: 
                     Audio::play<1>(Sounds::sfx_Negative);    
                     break;
+                
+                case SoundEffect::FistPunch1: 
+                    Audio::play<1>(Sounds::sfx_FistPunch1);    
+                    break;
+                
+                case SoundEffect::FistPunch2: 
+                    Audio::play<1>(Sounds::sfx_FistPunch2);    
+                    break;
+                
+                case SoundEffect::Welcome: 
+                    Audio::play<1>(Sounds::sfx_Welcome);    
+                    break;
 
             }
 
