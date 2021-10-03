@@ -15,9 +15,10 @@ void Game::treasure_Init() {
 
 	this->treasureScreenVars.init();
 	this->counter = 0;
-
 	this->gameState = GameState::Treasure;
   
+	this->playSoundEffect(SoundEffect::RollDice);
+
 }
 
 
@@ -34,17 +35,44 @@ void Game::treasure() {
 
 				if (PC::frameCount % DiceDelay[this->counter] == 0) {
 
-					this->treasureScreenVars.dice = random(1, 7);
+					for (uint8_t i = 0; i < this->playerStats.xpTrack; i++) {
+						this->treasureScreenVars.skillCheck[i] = random(1, 7); 
+					}
 
 					if (PC::buttons.pressed(BTN_A)) { 
 
 						counter = sizeof(DiceDelay); 
+						for (uint8_t i = 0; i < this->playerStats.xpTrack; i++) {
+							if (this->treasureScreenVars.skillCheck[i] >= 5) this->treasureScreenVars.hasSkill = true;
+						}
+
+						if (this->treasureScreenVars.hasSkill) {
+							this->playSoundEffect(SoundEffect::Positive);
+						}
+						else {
+							this->playSoundEffect(SoundEffect::Negative);
+						}
 
 					}
 					else {
 
 						this->counter++;
 						PC::frameCount = 0;
+
+						if (this->counter == sizeof(DiceDelay)) {
+
+							for (uint8_t i = 0; i < this->playerStats.xpTrack; i++) {
+								if (this->treasureScreenVars.skillCheck[i] >= 5) this->treasureScreenVars.hasSkill = true;
+							}
+
+							if (this->treasureScreenVars.hasSkill) {
+								this->playSoundEffect(SoundEffect::Positive);
+							}
+							else {
+								this->playSoundEffect(SoundEffect::Negative);
+							}
+
+						}
 
 					}
 
@@ -53,13 +81,13 @@ void Game::treasure() {
 			}
 			else {
 
-				if (this->treasureScreenVars.dice >= 5) {
+
+				if (this->treasureScreenVars.hasSkill) {
 
 					if (PC::buttons.pressed(BTN_A)) {
 
 						this->counter = treasure_NumberOfCardsInFlip;
 						this->treasureScreenVars.viewState = Treasure_ViewState::RollDice;
-						this->treasureScreenVars.dice = random(1, 7);
 
 					}
 
@@ -79,13 +107,13 @@ void Game::treasure() {
 
 			if (counter > 0) {
 
-				this->treasureScreenVars.dice = random(1, 7);
+				this->treasureScreenVars.dice = random(1, 7); 
 				this->counter--;
 
 			} 
 			else {
 
-				this->treasureScreenVars.foundTreasure = true;
+				this->treasureScreenVars.hasSkill = true;
 				if (this->playerStats.itemCount() >= 2 && this->treasureScreenVars.dice < 5) this->treasureScreenVars.dice = 7;
 
 				switch (this->treasureScreenVars.dice) {
@@ -115,8 +143,14 @@ void Game::treasure() {
 
 			if (PC::buttons.pressed(BTN_A)) {
 
-				this->gameState = gameStats.incRoom(playerStats); 
+				uint8_t oldArea = this->gameStats.getAreaId();
+				this->gameState = this->gameStats.incRoom(playerStats); 
 
+				if (oldArea != this->gameStats.getAreaId()) {
+
+					this->playTheme(this->gameStats.getAreaId());
+					
+				}
 			}
 
 			break;
@@ -134,19 +168,26 @@ void Game::treasure() {
 	switch (this->treasureScreenVars.viewState) {
 
 		case Treasure_ViewState::InitialRoll:
+			{
+				uint8_t left = 78 - ((10 * this->playerStats.xpTrack) / 2);
+				
+				if (this->counter < sizeof(DiceDelay)) {
 
-			if (this->counter < sizeof(DiceDelay)) {
+					PD::drawBitmap(25, 16, Images::Treasure_03);
 
-				PD::drawBitmap(25, 16, Images::Treasure_03);
-				PD::drawBitmap(59, 1, Images::Dice[this->treasureScreenVars.dice]);
+					for (uint8_t i = 0; i < this->playerStats.xpTrack; i++) {
+						PD::drawBitmap(left + (i * 10), 1, Images::Dice[this->treasureScreenVars.skillCheck[i]]);
+					}
 
-				PD::setCursor(14, 2);
-				PD::print("Open chest:");
+					PD::setCursor(14, 2);
+					PD::print("Open chest:");
 
-			}
-			else {
+				}
+				else {
 
-				this->renderChestResults();
+					this->renderChestResults();
+
+				}
 
 			}
 
@@ -159,7 +200,7 @@ void Game::treasure() {
 
 		case Treasure_ViewState::UpdateStats:
 
-			if (this->treasureScreenVars.foundTreasure) {
+			if (this->treasureScreenVars.hasSkill) {
 
 				this->renderSelectTreasure();
 
@@ -181,15 +222,15 @@ void Game::treasure() {
 
 	if (this->treasureScreenVars.dice == 6)        		                    					settings = static_cast<FlashSettings>(static_cast<uint8_t>(settings) | static_cast<uint8_t>(FlashSettings::FlashXP));
 	else if (this->treasureScreenVars.dice == 5)    		                    				settings = static_cast<FlashSettings>(static_cast<uint8_t>(settings) | static_cast<uint8_t>(FlashSettings::FlashArmour));
-	else if (this->treasureScreenVars.dice == 4 && this->treasureScreenVars.foundTreasure)		settings = static_cast<FlashSettings>(static_cast<uint8_t>(settings) | static_cast<uint8_t>(FlashSettings::FlashHP));
+	else if (this->treasureScreenVars.dice == 4 && this->treasureScreenVars.hasSkill)			settings = static_cast<FlashSettings>(static_cast<uint8_t>(settings) | static_cast<uint8_t>(FlashSettings::FlashHP));
 
 	const bool shouldFlash = (this->treasureScreenVars.viewState == Treasure_ViewState::UpdateStats && this->counter < FLASH_COUNTER);
 
 	this->renderPlayerStatistics(shouldFlash, settings);
 
-	if (this->treasureScreenVars.viewState == Treasure_ViewState::UpdateStats && this->treasureScreenVars.foundTreasure && this->counter < FLASH_COUNTER && flash) {
+	if (this->treasureScreenVars.viewState == Treasure_ViewState::UpdateStats && this->treasureScreenVars.hasSkill && this->counter < FLASH_COUNTER && flash) {
 
-		PD::setCursor(19, 0);
+		PD::setCursor(19, 1);
 		this->printCaption(this->treasureScreenVars.dice - 1); 
 
 	}
@@ -265,10 +306,15 @@ void Game::renderSelectTreasure() {
 void Game::renderChestResults() { 
 
 	PD::setCursor(14, 2);
-	PD::drawBitmap(59, 1, Images::Dice[this->treasureScreenVars.dice]);
 	PD::drawBitmap(25, 16, Images::Treasure_03);
 
-	if (this->treasureScreenVars.dice >= 5) {
+	uint8_t left = 78 - ((10 * this->playerStats.xpTrack) / 2);
+
+	for (uint8_t i = 0; i < this->playerStats.xpTrack; i++) {
+		PD::drawBitmap(left + (i * 10), 1, Images::Dice[this->treasureScreenVars.skillCheck[i]]);
+	}
+
+	if (this->treasureScreenVars.hasSkill) {
 
 		printCaption(7);
 

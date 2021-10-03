@@ -64,7 +64,14 @@ void Game::resting() {
 
 				if (counter == FLASH_COUNTER) {
 
+					uint8_t oldArea = this->gameStats.getAreaId();
 					this->gameState = this->gameStats.incRoom(playerStats); 
+
+					if (oldArea != this->gameStats.getAreaId()) {
+
+						this->playTheme(this->gameStats.getAreaId());
+						
+					}
 
 				}
 
@@ -72,7 +79,14 @@ void Game::resting() {
 
 			if (PC::buttons.pressed(BTN_A)) {
 
+				uint8_t oldArea = this->gameStats.getAreaId();
 				this->gameState = this->gameStats.incRoom(playerStats); 
+
+				if (oldArea != this->gameStats.getAreaId()) {
+
+					this->playTheme(this->gameStats.getAreaId());
+					
+				}
 
 			}
 

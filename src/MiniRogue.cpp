@@ -100,12 +100,15 @@ void Game::loop() {
             break;
 
         case GameState::GameOver_Init:
+        case GameState::Winner_Init:
             this->gameOver_Init();
             [[fallthrough]]
 
         case GameState::GameOver:
+        case GameState::Winner:
             this->gameOver();
             break;
+            
     }
 
 }

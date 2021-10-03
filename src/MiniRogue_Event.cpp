@@ -20,6 +20,8 @@ void Game::event_Init() {
 	this->counter = 0;
 	this->gameState = GameState::Event;
 
+	this->playSoundEffect(SoundEffect::RollDice);
+
 }
 
 // ----------------------------------------------------------------------------
@@ -59,6 +61,13 @@ void Game::event() {
 					
 				for (uint8_t i = 0; i < this->playerStats.xpTrack; i++) {
 					if (this->eventScreenVars.skillCheck[i] >= 5) this->eventScreenVars.hasSkill = true;
+				}
+
+				if (this->eventScreenVars.hasSkill) {
+					this->playSoundEffect(SoundEffect::Positive);
+				}
+				else {
+					this->playSoundEffect(SoundEffect::Negative);
 				}
 					
 			}
@@ -159,7 +168,14 @@ void Game::event() {
 
 					if (this->eventScreenVars.dice[this->eventScreenVars.selection] < 6) {
 
+						uint8_t oldArea = this->gameStats.getAreaId();
 						this->gameState = this->gameStats.incRoom(playerStats); 
+
+						if (oldArea != this->gameStats.getAreaId()) {
+
+							this->playTheme(this->gameStats.getAreaId());
+							
+						}
 
 					}
 					else {
@@ -199,21 +215,7 @@ void Game::event() {
 
 			this->renderLargeSpinningCard(39, 14, this->counter);
 
-			if (counter < Event_NumberOfCardsInFlip) {
-
-				for (uint8_t i = 0, j = 0; i < Images::Large_Spinning_Inlays[this->counter]; i++, j = j + 2) {
-
-					if (this->eventScreenVars.nextState == Event_ViewState::SelectCard) {
-						PD::drawBitmap(17 + (this->counter * 2) + j, 6, Images::Large_Card_Spinning_Inlay);
-						PD::drawBitmap(69 + (this->counter * 2) + j, 6, Images::Large_Card_Spinning_Inlay);
-					}
-
-					PD::drawBitmap(43 + (this->counter * 2) + j, 14, Images::Large_Card_Spinning_Inlay);
-
-				}
-
-			}
-			else {
+			if (counter >= Event_NumberOfCardsInFlip) {
 
 				PD::drawBitmap(41, 10, Images::Event_Dice[this->eventScreenVars.dice[1] - 1]);
 

@@ -138,6 +138,13 @@ struct MonsterStats {
     uint8_t dmg;
 };
 
+enum class SoundEffect : uint8_t {
+    EvilLaugh,
+    RollDice,
+    Positive,
+    Negative,
+};
+
 enum class SoundEffects : uint8_t {
     Both,
     Music,

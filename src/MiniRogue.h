@@ -37,6 +37,8 @@ class Game {
 		uint8_t rightFlame = 1;
         uint8_t counter = 0;
         GameState cards[7];
+        File mainThemeFile;
+        uint8_t currentTheme = 255;
 
     public:
 
@@ -98,6 +100,10 @@ class Game {
         void printEventName(uint8_t dice);
         void renderTwoDigitNumeric(uint8_t val);
         void renderThreeDigitNumeric(uint8_t val); 
+
+        void playTheme(uint8_t index);
+        void muteTheme();
+        void playSoundEffect(SoundEffect soundEffect);
 
         FightMonster_SelectedElement prevDiceSelection(FightMonster_SelectedElement element);
         FightMonster_SelectedElement nextDiceSelection(FightMonster_SelectedElement element);

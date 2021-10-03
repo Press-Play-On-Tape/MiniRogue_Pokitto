@@ -11,7 +11,7 @@ void Game::gameOver_Init() {
 
 	switch (this->gameState) {
 
-		case GameState::Winner:
+		case GameState::Winner_Init:
 			this->gameOverScreenVars.viewState = GameOver_ViewState::Winner; 
 			break;
 
@@ -52,7 +52,7 @@ void Game::gameOver_Init() {
 //
 void Game::gameOver() { 
 
-  if (PC::buttons.pressed(BTN_A)) { 
+  	if (PC::buttons.pressed(BTN_A)) { 
 		
 		switch (this->gameOverScreenVars.viewState) {
 
@@ -131,9 +131,11 @@ void Game::gameOver() {
 
 			if (PC::frameCount % 70 < 7) {
 				PD::drawBitmap(42, 4, Images::BlinkEyes_2);
+				PD::drawBitmap(64, 4, Images::BlinkEyes_2, NOROT, FLIPH);
 			}
 			else {
 				PD::drawBitmap(42, 4, Images::BlinkEyes_1);
+				PD::drawBitmap(64, 4, Images::BlinkEyes_1, NOROT, FLIPH);
 			}
 
 			PD::drawFastHLine(8, 57, 94);

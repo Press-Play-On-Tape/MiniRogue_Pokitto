@@ -278,6 +278,8 @@ void Game::fightMonster() {
 				this->fightMonsterScreenVars.viewState = FightMonster_ViewState::HighlightPlayerStats;
 				this->fightMonsterScreenVars.nextState = FightMonster_ViewState::PlayerDead;
 
+				this->playSoundEffect(SoundEffect::EvilLaugh);
+
 			}
 			else {
 
@@ -291,8 +293,16 @@ void Game::fightMonster() {
 		case FightMonster_ViewState::MonsterDead:
 
 			if (PC::buttons.pressed(BTN_A)) { 
+
+				uint8_t oldArea = this->gameStats.getAreaId();
 				this->gameStats.monsterDefeated = true;
-        		this->gameState = gameStats.incRoom(playerStats); 
+				this->gameState = this->gameStats.incRoom(playerStats); 
+
+				if (oldArea != this->gameStats.getAreaId()) {
+
+					this->playTheme(this->gameStats.getAreaId());
+					
+				}
 			}
 			
 			if (this->counter < FLASH_COUNTER) {
@@ -314,9 +324,17 @@ void Game::fightMonster() {
 
 			if (PC::buttons.pressed(BTN_A)) {
 
-				this->gameStats.monsterDefeated = true;
-        		this->gameState = gameStats.incRoom(playerStats);
+				uint8_t oldArea = this->gameStats.getAreaId();
 
+				this->gameStats.monsterDefeated = true;
+				this->gameState = this->gameStats.incRoom(playerStats); 
+
+				if (oldArea != this->gameStats.getAreaId()) {
+
+					this->playTheme(this->gameStats.getAreaId());
+					
+				}
+				
 				#ifdef USE_LEDS
 				arduboy.setRGBled(RED_LED, 0);
 				#endif

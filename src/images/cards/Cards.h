@@ -43,7 +43,6 @@ namespace Images {
     #include "large/Large_Card_Spinning_12.h"
     #include "large/Large_Card_Spinning_13.h"
     #include "large/Large_Card_Spinning_Highlight.h"
-    #include "large/Large_Card_Spinning_Inlay.h"
 
     const uint8_t * const Card_Faces[] = { 
         CardFace_Resting,
@@ -77,12 +76,25 @@ namespace Images {
     };
 
     const uint8_t * const Large_Spinning_Cards[] = { 
-        Large_Card_Spinning_13, 
-        Large_Card_Spinning_12, 
-        Large_Card_Spinning_11, 
-        Large_Card_Spinning_10, 
-        Large_Card_Spinning_09, 
-        Large_Card_Spinning_08, 
+        // Large_Card_Spinning_13, 
+        // Large_Card_Spinning_12, 
+        // Large_Card_Spinning_11, 
+        // Large_Card_Spinning_10, 
+        // Large_Card_Spinning_09, 
+        // Large_Card_Spinning_08, 
+        // Large_Card_Spinning_07, 
+        // Large_Card_Spinning_08, 
+        // Large_Card_Spinning_09, 
+        // Large_Card_Spinning_10, 
+        // Large_Card_Spinning_11, 
+        // Large_Card_Spinning_12, 
+        // Large_Card_Spinning_13, 
+        Large_Card_Spinning_01, 
+        Large_Card_Spinning_02, 
+        Large_Card_Spinning_03, 
+        Large_Card_Spinning_04, 
+        Large_Card_Spinning_05, 
+        Large_Card_Spinning_06, 
         Large_Card_Spinning_07, 
         Large_Card_Spinning_08, 
         Large_Card_Spinning_09, 

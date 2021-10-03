@@ -158,13 +158,18 @@ struct TreasureScreenVariables {
 
     Treasure_ViewState viewState = Treasure_ViewState::InitialRoll;
     uint8_t dice = 0;
-    bool foundTreasure = false;
+    uint8_t skillCheck[6];
+    bool hasSkill = false;    
 
     void init() {
 
         this->viewState = Treasure_ViewState::InitialRoll;
         this->dice = 0;
-        this->foundTreasure = false;
+        this->hasSkill = false;    
+
+        for (uint8_t i = 0; i < 6; i++) {
+            this->skillCheck[i] = 0;
+        }
 
     }
 
@@ -249,11 +254,11 @@ struct PlayerStats {
 
     void incXP(uint8_t value) {
 
-        static const uint8_t PROGMEM xpLevels[] = {0, 6, 12, 18, 99};
+        static const uint8_t xpLevels[] = {0, 6, 12, 18, 99};
 
-        uint8_t xpLevel = pgm_read_byte(&xpLevels[xpTrack]);
+        uint8_t xpLevel = xpLevels[xpTrack];
 
-        xp = xp + value;
+        this->xp = xp + value;
 
         if (xp > xpLevel) {
 
@@ -266,16 +271,16 @@ struct PlayerStats {
 
     void resetGame() {
 
-        for (uint8_t x = 0; x < 4; x++) { items[x] = 0; }
-        xpTrack = 1;
-        xp = 0;
-        bossesKilled = 0;
+        for (uint8_t x = 0; x < 4; x++) { this->items[x] = 0; }
+        this->xpTrack = 1;
+        this->xp = 0;
+        this->bossesKilled = 0;
 
     }
 
     uint8_t itemCount() {
 
-        return items[0] + items[1] + items[2] + items[3];
+        return this->items[0] + this->items[1] + this->items[2] + this->items[3];
 
     }
 
@@ -300,15 +305,15 @@ struct GameStats {
 
     void dropArea() {
 
-        static const uint8_t drops[] PROGMEM = { 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, };
-        level = (level < 10) ? (level + pgm_read_byte(&drops[level])) : level;
+        static const uint8_t drops[] = { 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, };
+        level = (level < 10) ? (level + drops[level]) : level;
 
     }
 
     uint8_t getAreaId() {
 
-        static const uint8_t ids[] PROGMEM = { 0, 0, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 4, 4, };
-        return (level < 15) ? pgm_read_byte(&ids[level]) : 5;
+        static const uint8_t ids[] = { 0, 0, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 4, 4, };
+        return (level < 15) ? ids[level] : 5;
 
     }
 
@@ -332,35 +337,35 @@ struct GameStats {
 
     GameState incRoom(PlayerStats & playerStats) {
 
-        room++;
+        this->room++;
 
-        switch (room) {
+        switch (this->room) {
 
-            case 1:   selectedCard = 0;   break;
-            case 2:   selectedCard = 1;   break;
-            case 3:   selectedCard = 3;   break;
-            case 4:   selectedCard = 4;   break;
-            case 5:   selectedCard = 6;   break;
+            case 1:   this->selectedCard = 0;   break;
+            case 2:   this->selectedCard = 1;   break;
+            case 3:   this->selectedCard = 3;   break;
+            case 4:   this->selectedCard = 4;   break;
+            case 5:   this->selectedCard = 6;   break;
 
         }
 
-        if ((room == 6) && (level == 13)) {
+        if ((this->room == 6) && (this->level == 13)) {
 
             return GameState::Winner_Init;
 
         }
         else {
 
-            if (room == 6 || (room == 5 && !isLastLevelInArea())) {
+            if (this->room == 6 || (this->room == 5 && !isLastLevelInArea())) {
 
                 playerStats.decFood(1);
-                room = 0;
+                this->room = 0;
 
                 if (playerStats.food >= 0) {
-
-                    level++;
-                    selectedCard = 0;
-                    monsterDefeated = false;
+                    
+                    this->level++;
+                    this->selectedCard = 0;
+                    this->monsterDefeated = false;
 
                 }
 
@@ -375,23 +380,23 @@ struct GameStats {
 
     uint8_t getMonsterDMG() {
 
-        return (getAreaId() + 1) * 2;
+        return (this->getAreaId() + 1) * 2;
 
     }
 
 
     uint8_t getBossMonsterDMG() {
 
-        static const uint8_t damage[] PROGMEM = { 3, 5, 7, 9, 12, };
+        static const uint8_t damage[] = { 3, 5, 7, 9, 12, };
 
-        auto areaId = getAreaId();
-        return (areaId < 5) ? pgm_read_byte(&damage[areaId]) : 0;
+        auto areaId = this->getAreaId();
+        return (areaId < 5) ? damage[areaId] : 0;
 
     }
 
     uint8_t getMonsterReward() {
 
-        return (getAreaId() + 1);
+        return (this->getAreaId() + 1);
 
     }
 

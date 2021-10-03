@@ -142,7 +142,7 @@ void Game::merchant() {
 		case Merchant_ViewState::Selling:
 
 			if (PC::buttons.pressed(BTN_UP) && this->merchantScreenVars.selectedItem > 0)            this->merchantScreenVars.selectedItem--;
-			if (PC::buttons.pressed(BTN_DOWN) && this->merchantScreenVars.selectedItem < 4)          this->merchantScreenVars.selectedItem++;
+			if (PC::buttons.pressed(BTN_DOWN) && this->merchantScreenVars.selectedItem < 3)          this->merchantScreenVars.selectedItem++;
 
 			if (PC::buttons.pressed(BTN_A)) {
 
@@ -190,7 +190,14 @@ void Game::merchant() {
 
 	if (PC::buttons.pressed(BTN_B)) {
 
-		this->gameState = gameStats.incRoom(playerStats); 
+		uint8_t oldArea = this->gameStats.getAreaId();
+		this->gameState = this->gameStats.incRoom(playerStats); 
+
+		if (oldArea != this->gameStats.getAreaId()) {
+
+			this->playTheme(this->gameStats.getAreaId());
+			
+		}
 
 	}
 

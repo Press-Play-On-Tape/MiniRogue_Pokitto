@@ -12,6 +12,7 @@ namespace Images {
     #include "Trap_LHS.h"
     #include "Trap_RHS.h"
     #include "Trap_Single.h"
+    #include "Trap_Background.h"
 
     const uint8_t * const Trap_Dice[] = { 
         Card_Mildew, 

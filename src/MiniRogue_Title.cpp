@@ -14,6 +14,12 @@ void Game::title_Init() {
 
     this->gameState = GameState::TitleScreen;
 
+	if (this->currentTheme != 0) {
+
+		this->playTheme(0);
+		
+	}
+
 }
 
 
@@ -42,6 +48,8 @@ void Game::title() {
 
 		this->resetGame();
         this->gameState = GameState::ShowCards_Init;
+
+		// this->gameStats.level = 13;//SJH
 		
 	}
 
@@ -55,12 +63,12 @@ void Game::title() {
 
 			if (this->cookie->sfx != SoundEffects::Both && this->cookie->sfx != SoundEffects::Music) {
 
-				//SJHthis->muteTheme();
+				this->muteTheme();
 				
 			}
 			else {
 
-				//SJHthis->playTheme(Themes::Main);
+				this->playTheme(0);
 
 			}
 
@@ -73,12 +81,12 @@ void Game::title() {
 
 			if (this->cookie->sfx != SoundEffects::Both && this->cookie->sfx != SoundEffects::Music) {
 
-				//SJHthis->muteTheme();
+				this->muteTheme();
 				
 			}
 			else {
 
-				//SJHthis->playTheme(Themes::Main);
+				this->playTheme(0);
 				
 			}
 			

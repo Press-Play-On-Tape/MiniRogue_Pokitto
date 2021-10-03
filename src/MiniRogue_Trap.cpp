@@ -10,6 +10,8 @@ void Game::trap_Init() {
 	this->trapScreenVars.init();
 	this->counter = 0;
 	this->gameState = GameState::Trap;
+
+	this->playSoundEffect(SoundEffect::RollDice);
   
 }
 
@@ -54,6 +56,13 @@ void Game::trap() {
 					if (this->trapScreenVars.skillCheck[i] >= 5) this->trapScreenVars.hasSkill = true;
 				}
 
+				if (this->trapScreenVars.hasSkill) {
+					this->playSoundEffect(SoundEffect::Positive);
+				}
+				else {
+					this->playSoundEffect(SoundEffect::Negative);
+				}
+
 			}
 			break;
 
@@ -72,7 +81,14 @@ void Game::trap() {
 
 					if (this->trapScreenVars.hasSkill) {
 
-						this->gameState = gameStats.incRoom(playerStats); 
+						uint8_t oldArea = this->gameStats.getAreaId();
+						this->gameState = this->gameStats.incRoom(playerStats); 
+
+						if (oldArea != this->gameStats.getAreaId()) {
+
+							this->playTheme(this->gameStats.getAreaId());
+							
+						}
 
 					}
 					else {
@@ -130,6 +146,7 @@ void Game::trap() {
 				else {
 
 					trapScreenVars.viewState = Trap_ViewState::PlayerDead;
+					this->playSoundEffect(SoundEffect::EvilLaugh);
 
 				}
 
@@ -147,7 +164,14 @@ void Game::trap() {
 
 				if (PC::buttons.pressed(BTN_A)) {
 
-					this->gameState = gameStats.incRoom(playerStats); 
+					uint8_t oldArea = this->gameStats.getAreaId();
+					this->gameState = this->gameStats.incRoom(playerStats); 
+
+					if (oldArea != this->gameStats.getAreaId()) {
+
+						this->playTheme(this->gameStats.getAreaId());
+						
+					}
 
 				}
 
@@ -174,12 +198,9 @@ void Game::trap() {
 	// Render common parts ..
 
 	this->renderBackground();
-	PD::drawBitmap(11, 40, Images::Trap_LHS);
-	PD::drawBitmap(90, 40, Images::Trap_RHS);
-
-	for (uint8_t i = 20; i < 81; i = i + 14) {
-		PD::drawBitmap(i, 40, Images::Trap_Single);
-	}
+	// PD::drawBitmap(11, 40, Images::Trap_LHS);
+	// PD::drawBitmap(90, 40, Images::Trap_RHS);
+	PD::drawBitmap(11, 0, Images::Trap_Background);
 
 	switch (this->trapScreenVars.viewState) {
 
@@ -188,6 +209,7 @@ void Game::trap() {
 			{
 				uint8_t left = 56 - ((10 * this->playerStats.xpTrack) / 2);
 
+				PD::setColor(7, 1);
 				PD::setCursor(this->trapScreenVars.viewState == Trap_ViewState::SkillCheck ? 35 : 24, 3);
 				PD::print("Evade trap?");
 				PD::setCursor(74, 3);
@@ -204,9 +226,9 @@ void Game::trap() {
 
 						if ((this->counter < FLASH_COUNTER) && flash) {
 							
-							PD::setColor(7);
+							PD::setColor(7, 1);
 							PD::fillRect(72, 2, 15, 7);
-							PD::setColor(0, 7);
+							PD::setColor(1, 7);
 
 						}
 						
@@ -217,9 +239,9 @@ void Game::trap() {
 
 						if ((this->counter < FLASH_COUNTER) && flash) {
 							
-							PD::setColor(7);
+							PD::setColor(7, 1);
 							PD::fillRect(72, 2, 11, 7);
-							PD::setColor(0, 7);
+							PD::setColor(1, 7);
 
 						}
 						
@@ -227,7 +249,7 @@ void Game::trap() {
 
 					}
 
-					PD::setColor(7, 0);
+					PD::setColor(7, 1);
 
 				}
 
@@ -239,14 +261,7 @@ void Game::trap() {
 
 			this->renderLargeSpinningCard(39, 8, this->counter);
 
-			if (counter < Trap_NumberOfCardsInFlip) {
-
-				for (uint8_t i = 0, j = 0; i < Images::Large_Spinning_Inlays[this->counter]; i++, j = j + 2) {
-					PD::drawBitmap(43 + (this->counter * 2) + j, 8, Images::Large_Card_Spinning_Inlay);
-				}
-
-			}
-			else {
+			if (counter >= Trap_NumberOfCardsInFlip) {
 
 				PD::drawBitmap(41, 10, Images::Dice[this->trapScreenVars.dice - 1]);
 
@@ -265,7 +280,7 @@ void Game::trap() {
 
 		case Trap_ViewState::PlayerDead:
 
-			PD::setCursor(15, 0);
+			PD::setCursor(15, 1);
 			printTrapName();
 			this->renderLargeSpinningCard(39, 8, 0);
 			PD::drawBitmap(41, 10, Images::Trap_Dice[this->trapScreenVars.dice - 1]);
@@ -294,6 +309,8 @@ void Game::trap() {
 }
 
 void Game::printTrapName() {
+
+	PD::setColor(7, 1);
 
 	switch (this->trapScreenVars.dice - 1) {
 
