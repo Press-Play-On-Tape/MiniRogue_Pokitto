@@ -32,7 +32,7 @@ void Game::splash() {
 
     }
     
-    if (PC::frameCount % 24 == 0) {
+    if (PC::frameCount % 12 == 0) {
 
         this->splashScreenVariables.counter++;
         

@@ -199,7 +199,6 @@ struct PlayerStats {
     int8_t food;
     uint8_t gold;
     uint8_t hp;
-    uint8_t xpTrack = 1;
     uint8_t xp;
     uint8_t bossesKilled;
     uint8_t items[4];
@@ -254,25 +253,25 @@ struct PlayerStats {
 
     void incXP(uint8_t value) {
 
-        static const uint8_t xpLevels[] = {0, 6, 12, 18, 99};
-
-        uint8_t xpLevel = xpLevels[xpTrack];
-
         this->xp = xp + value;
 
-        if (xp > xpLevel) {
+    }
 
-            xp = xp - (xpLevel - 1);
-            xpTrack++;
+    uint8_t getXPTrack() {
+
+        switch (this->xp) {
+
+            case 0 ... 5:   return 1;
+            case 6 ... 17:  return 2;
+            default:        return 3;
 
         }
-
+        
     }
 
     void resetGame() {
 
         for (uint8_t x = 0; x < 4; x++) { this->items[x] = 0; }
-        this->xpTrack = 1;
         this->xp = 0;
         this->bossesKilled = 0;
 

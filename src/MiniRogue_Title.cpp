@@ -44,7 +44,6 @@ void Game::title() {
 		playerStats.hp = InitSettings[idx++];
 		playerStats.gold = InitSettings[idx++];
 		playerStats.food = InitSettings[idx];
-		this->playerStats.xpTrack = 1;
 
 		this->resetGame();
         this->gameState = GameState::ShowCards_Init;
@@ -106,10 +105,11 @@ void Game::title() {
         this->rightFlame = (this->rightFlame + 1) % 4;
     }
 
-	PD::setColor(7);
+	PD::setColor(6);
 	PD::drawFastHLine(10, 68, 90);
+	PD::setColor(5);
 	PD::drawFastHLine(10, 70, 90);
-	this->drawHorizontalDottedLine(10, 98, 72, 6);
+	this->drawHorizontalDottedLine(10, 98, 72, 5);
 
 	PD::drawBitmap(20, 24, Images::TitleScreen_MiniRogue);
 	PD::drawBitmap(9, 76, Images::TitleScreen_Levels);

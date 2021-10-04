@@ -86,7 +86,7 @@ void Game::renderPlayerStatistics(bool overallFlash, FlashSettings settings) {
         switch (x)  {
 
             case 0:   
-                val = playerStats.xpTrack;       
+                val = playerStats.getXPTrack();       
                 break;
 
             case 1:   

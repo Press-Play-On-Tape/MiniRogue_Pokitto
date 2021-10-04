@@ -34,7 +34,7 @@ void Game::event() {
 		case Event_ViewState::SkillCheck:
 
 			if (PC::buttons.pressed(BTN_A)) { 
-				for (uint8_t i = 0; i < this->playerStats.xpTrack; i++) {
+				for (uint8_t i = 0; i < this->playerStats.getXPTrack(); i++) {
 					this->eventScreenVars.skillCheck[i] = random(1, 7); 
 				}
 				counter = FLASH_COUNTER; 
@@ -44,7 +44,7 @@ void Game::event() {
 
 				if (PC::frameCount % DiceDelay[this->counter] == 0) {
 
-					for (uint8_t i = 0; i < this->playerStats.xpTrack; i++) {
+					for (uint8_t i = 0; i < this->playerStats.getXPTrack(); i++) {
 						this->eventScreenVars.skillCheck[i] = random(1, 7);
 					}
 					this->counter++;
@@ -59,7 +59,7 @@ void Game::event() {
 				PC::frameCount = 0;
 				this->eventScreenVars.viewState = Event_ViewState::SkillCheckResult;
 					
-				for (uint8_t i = 0; i < this->playerStats.xpTrack; i++) {
+				for (uint8_t i = 0; i < this->playerStats.getXPTrack(); i++) {
 					if (this->eventScreenVars.skillCheck[i] >= 5) this->eventScreenVars.hasSkill = true;
 				}
 
@@ -227,14 +227,14 @@ void Game::event() {
 		case Event_ViewState::SkillCheckResult:
 			{
 
-				uint8_t left = 56 - ((10 * this->playerStats.xpTrack) / 2);
+				uint8_t left = 56 - ((10 * this->playerStats.getXPTrack()) / 2);
 
 				PD::setColor(7, 1);
 				PD::setCursor(this->eventScreenVars.viewState == Event_ViewState::SkillCheck ? 30 : 21, 3);
 				PD::print("Enough skill?");
 				PD::setCursor(77, 3);
 
-				for (uint8_t i = 0; i < this->playerStats.xpTrack; i++) {
+				for (uint8_t i = 0; i < this->playerStats.getXPTrack(); i++) {
 					PD::drawBitmap(left + (i * 10), 12, Images::Dice[this->eventScreenVars.skillCheck[i]]);
 				}
 

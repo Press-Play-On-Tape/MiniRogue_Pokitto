@@ -26,7 +26,7 @@ void Game::trap() {
 		case Trap_ViewState::SkillCheck:
 
 			if (PC::buttons.pressed(BTN_A)) { 
-				for (uint8_t i = 0; i < this->playerStats.xpTrack; i++) {
+				for (uint8_t i = 0; i < this->playerStats.getXPTrack(); i++) {
 					this->trapScreenVars.skillCheck[i] = random(1, 7); 
 				}
 				counter = sizeof(DiceDelay); 
@@ -36,7 +36,7 @@ void Game::trap() {
 
 				if (PC::frameCount % DiceDelay[this->counter] == 0) {
 
-					for (uint8_t i = 0; i < this->playerStats.xpTrack; i++) {
+					for (uint8_t i = 0; i < this->playerStats.getXPTrack(); i++) {
 						this->trapScreenVars.skillCheck[i] = random(1, 7); 
 					}
 
@@ -52,7 +52,7 @@ void Game::trap() {
 				PC::frameCount = 0;
 				this->trapScreenVars.viewState = Trap_ViewState::SkillCheckResult;
 
-				for (uint8_t i = 0; i < this->playerStats.xpTrack; i++) {
+				for (uint8_t i = 0; i < this->playerStats.getXPTrack(); i++) {
 					if (this->trapScreenVars.skillCheck[i] >= 5) this->trapScreenVars.hasSkill = true;
 				}
 
@@ -207,14 +207,14 @@ void Game::trap() {
 		case Trap_ViewState::SkillCheck:
 		case Trap_ViewState::SkillCheckResult:
 			{
-				uint8_t left = 56 - ((10 * this->playerStats.xpTrack) / 2);
+				uint8_t left = 56 - ((10 * this->playerStats.getXPTrack()) / 2);
 
 				PD::setColor(7, 1);
 				PD::setCursor(this->trapScreenVars.viewState == Trap_ViewState::SkillCheck ? 35 : 24, 3);
 				PD::print("Evade trap?");
 				PD::setCursor(74, 3);
 
-				for (uint8_t i = 0; i < this->playerStats.xpTrack; i++) {
+				for (uint8_t i = 0; i < this->playerStats.getXPTrack(); i++) {
 					PD::drawBitmap(left + (i * 10), 12, Images::Dice[this->trapScreenVars.skillCheck[i]]);
 				}
 

@@ -79,7 +79,7 @@ void Game::fightMonster() {
 
 				this->counter = sizeof(DiceDelay); 
 
-				for (uint8_t i = 0; i < playerStats.xpTrack; i++) {
+				for (uint8_t i = 0; i < playerStats.getXPTrack(); i++) {
 					if (! this->fightMonsterScreenVars.dice_Retain[i]) this->fightMonsterScreenVars.dice[i] = random(1, 7);
 				}
 
@@ -89,7 +89,7 @@ void Game::fightMonster() {
 				
 				if (PC::frameCount % DiceDelay[counter] == 0) {
 
-					for (uint8_t i = 0; i < playerStats.xpTrack; i++) {
+					for (uint8_t i = 0; i < playerStats.getXPTrack(); i++) {
 						if (! this->fightMonsterScreenVars.dice_Retain[i]) this->fightMonsterScreenVars.dice[i] = random(1, 7);
 					}
 
@@ -607,7 +607,7 @@ void Game::renderFightMonster() {
 				
 		}
 
-		for (uint8_t i = 0; i < playerStats.xpTrack; i++) {
+		for (uint8_t i = 0; i < playerStats.getXPTrack(); i++) {
 			PD::drawBitmap(14 + (i * 10), 52, Images::Dice[this->fightMonsterScreenVars.dice[i]]);
 		}
 	}
@@ -620,7 +620,7 @@ void Game::renderFightMonster() {
 		uint8_t x = 0;
 		uint8_t y = 0;
 
-		if (this->fightMonsterScreenVars.viewState == FightMonster_ViewState::DiceSelection) 			{ x = 14 + (playerStats.xpTrack * 10);	y = 53;	}
+		if (this->fightMonsterScreenVars.viewState == FightMonster_ViewState::DiceSelection) 			{ x = 14 + (playerStats.getXPTrack() * 10);	y = 53;	}
 		if (this->fightMonsterScreenVars.viewState == FightMonster_ViewState::WandSelection) 			{ x = 37; y = 53;	}
 
 		if (x > 0) PD::drawBitmap(x, y, Images::Marker, 0);
@@ -878,7 +878,7 @@ uint8_t Game::getMonsterDMG() {
 
 	uint8_t damage = 0;
 
-	for (uint8_t i = 0; i < this->playerStats.xpTrack; i++) {
+	for (uint8_t i = 0; i < this->playerStats.getXPTrack(); i++) {
 		if (this->fightMonsterScreenVars.dice[i] != 1) {
 			damage = damage + this->fightMonsterScreenVars.dice[i] + (this->fightMonsterScreenVars.dice_Sixes[i] * 6);
 		}
@@ -894,7 +894,7 @@ uint8_t Game::getMonsterDMG() {
 //
 void Game::setDiceSelection(bool value) {
 
-	for (uint8_t i = 0; i < this->playerStats.xpTrack; i++) {
+	for (uint8_t i = 0; i < this->playerStats.getXPTrack(); i++) {
 
 		 this->fightMonsterScreenVars.dice_Retain[i] = value;
 

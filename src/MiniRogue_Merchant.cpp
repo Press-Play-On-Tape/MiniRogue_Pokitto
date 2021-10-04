@@ -220,9 +220,6 @@ void Game::merchant() {
 		PD::drawFastHLine(69, 13, 7); 
 	}
 
-	PD::drawFastHLine(46, 62, 51);
-	this->drawHorizontalDottedLine(46, 87, 64, 7);
-	this->drawHorizontalDottedLine(47, 87, 65, 7);
 
 	{
 

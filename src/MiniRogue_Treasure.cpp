@@ -35,14 +35,14 @@ void Game::treasure() {
 
 				if (PC::frameCount % DiceDelay[this->counter] == 0) {
 
-					for (uint8_t i = 0; i < this->playerStats.xpTrack; i++) {
+					for (uint8_t i = 0; i < this->playerStats.getXPTrack(); i++) {
 						this->treasureScreenVars.skillCheck[i] = random(1, 7); 
 					}
 
 					if (PC::buttons.pressed(BTN_A)) { 
 
 						counter = sizeof(DiceDelay); 
-						for (uint8_t i = 0; i < this->playerStats.xpTrack; i++) {
+						for (uint8_t i = 0; i < this->playerStats.getXPTrack(); i++) {
 							if (this->treasureScreenVars.skillCheck[i] >= 5) this->treasureScreenVars.hasSkill = true;
 						}
 
@@ -61,7 +61,7 @@ void Game::treasure() {
 
 						if (this->counter == sizeof(DiceDelay)) {
 
-							for (uint8_t i = 0; i < this->playerStats.xpTrack; i++) {
+							for (uint8_t i = 0; i < this->playerStats.getXPTrack(); i++) {
 								if (this->treasureScreenVars.skillCheck[i] >= 5) this->treasureScreenVars.hasSkill = true;
 							}
 
@@ -169,13 +169,13 @@ void Game::treasure() {
 
 		case Treasure_ViewState::InitialRoll:
 			{
-				uint8_t left = 78 - ((10 * this->playerStats.xpTrack) / 2);
+				uint8_t left = 78 - ((10 * this->playerStats.getXPTrack()) / 2);
 				
 				if (this->counter < sizeof(DiceDelay)) {
 
 					PD::drawBitmap(25, 16, Images::Treasure_03);
 
-					for (uint8_t i = 0; i < this->playerStats.xpTrack; i++) {
+					for (uint8_t i = 0; i < this->playerStats.getXPTrack(); i++) {
 						PD::drawBitmap(left + (i * 10), 1, Images::Dice[this->treasureScreenVars.skillCheck[i]]);
 					}
 
@@ -308,9 +308,9 @@ void Game::renderChestResults() {
 	PD::setCursor(14, 2);
 	PD::drawBitmap(25, 16, Images::Treasure_03);
 
-	uint8_t left = 78 - ((10 * this->playerStats.xpTrack) / 2);
+	uint8_t left = 78 - ((10 * this->playerStats.getXPTrack()) / 2);
 
-	for (uint8_t i = 0; i < this->playerStats.xpTrack; i++) {
+	for (uint8_t i = 0; i < this->playerStats.getXPTrack(); i++) {
 		PD::drawBitmap(left + (i * 10), 1, Images::Dice[this->treasureScreenVars.skillCheck[i]]);
 	}
 

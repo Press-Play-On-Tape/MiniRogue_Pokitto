@@ -23,7 +23,7 @@ void Game::gameOver_Init() {
 
 	this->gameOverScreenVars.score = 0;
 	this->gameOverScreenVars.score += (gameStats.skillLevel * 3);
-	this->gameOverScreenVars.score += (playerStats.xpTrack * 2);
+	this->gameOverScreenVars.score += (playerStats.getXPTrack() * 2);
 	this->gameOverScreenVars.score += ((gameStats.level + 1) * 3);
 	this->gameOverScreenVars.score += (playerStats.hp * 2);
 	this->gameOverScreenVars.score += (playerStats.food);
@@ -61,7 +61,7 @@ void Game::gameOver() {
 				break;
 
 			case GameOver_ViewState::HighScore:
-				this->gameState = GameState::TitleScreen; 
+				this->gameState = GameState::TitleScreen_Init; 
 				break;
 
 		}
@@ -121,17 +121,22 @@ void Game::gameOver() {
 			PD::drawBitmap(15, 19, Images::Winner);
 
 			if (PC::frameCount % 70 < 7) {
-				PD::drawBitmap(42, 4, Images::BlinkEyes_2);
-				PD::drawBitmap(64, 4, Images::BlinkEyes_2, NOROT, FLIPH);
+				PD::drawBitmap(39, 4, Images::BlinkEyes_2);
+				PD::drawBitmap(61, 4, Images::BlinkEyes_2, NOROT, FLIPH);
 			}
 			else {
-				PD::drawBitmap(42, 4, Images::BlinkEyes_1);
-				PD::drawBitmap(64, 4, Images::BlinkEyes_1, NOROT, FLIPH);
+				PD::drawBitmap(39, 4, Images::BlinkEyes_1);
+				PD::drawBitmap(61, 4, Images::BlinkEyes_1, NOROT, FLIPH);
 			}
 
-			PD::drawFastHLine(8, 57, 94);
-			PD::drawFastHLine(8, 59, 94);
-			this->drawHorizontalDottedLine(8, 100, 61, 1);
+			PD::setColor(6);
+			PD::drawFastHLine(8, 60, 94);
+			PD::setColor(5);
+			PD::drawFastHLine(8, 62, 94);
+			this->drawHorizontalDottedLine(8, 100, 64, 5);
+			FlashSettings flashSettings;
+			PD::drawBitmap(13, 70, Images::Health);	
+			this->renderPlayerStatistics(false, flashSettings);
 
 			break;
 
@@ -143,52 +148,52 @@ void Game::gameOver() {
 			PD::print("Skill Level");
 			PD::setCursor(72, 18);
 			PD::print("x2");
-			PD::setCursor(17, 27);
+			PD::setCursor(17, 28);
 			PD::print("Area Reached");
-			PD::setCursor(72, 27);
+			PD::setCursor(72, 28);
 			PD::print("x3");
-			PD::setCursor(17, 36);
+			PD::setCursor(17, 38);
 			PD::print("Bosses Slayed");
-			PD::setCursor(72, 36);
+			PD::setCursor(72, 38);
 			PD::print("x2");
 	
 			PD::setCursor(86, 18);
 			this->renderTwoDigitNumeric(gameStats.skillLevel * 2);
-			PD::setCursor(86, 27);
+			PD::setCursor(86, 28);
 			this->renderTwoDigitNumeric((gameStats.level + 1) * 3);
-			PD::setCursor(86, 36);
+			PD::setCursor(86, 38);
 			this->renderTwoDigitNumeric(playerStats.bossesKilled * 2);
 
-			PD::drawBitmap(11, 47, Images::HighScore);
+			PD::drawBitmap(11, 53, Images::HighScore);
 
-			PD::setCursor(28, 48);
-			this->renderTwoDigitNumeric(playerStats.xpTrack * 2);
-			PD::setCursor(28, 57);
+			PD::setCursor(28, 54);
+			this->renderTwoDigitNumeric(playerStats.getXPTrack() * 2);
+			PD::setCursor(28, 64);
 			this->renderTwoDigitNumeric(playerStats.hp * 2);
 
-			PD::setCursor(61, 48);
+			PD::setCursor(61, 54);
 			this->renderTwoDigitNumeric(playerStats.gold * 2);
-			PD::setCursor(61, 57);
+			PD::setCursor(61, 64);
 			this->renderTwoDigitNumeric(playerStats.food);
 
-			PD::setCursor(93, 48);
+			PD::setCursor(93, 54);
 			this->renderTwoDigitNumeric(playerStats.armour);
-			PD::setCursor(93, 57);
+			PD::setCursor(93, 64);
 			this->renderTwoDigitNumeric(playerStats.itemCount());
 
-			PD::setCursor(7, 71);
+			PD::setCursor(7, 80);
 			PD::print("Score:");
-			PD::setCursor(50, 71);
+			PD::setCursor(50, 80);
 			PD::print("High");
-			PD::setCursor(68, 71);
+			PD::setCursor(68, 80);
 			PD::print("Score:");
-			PD::setCursor(31, 71);
+			PD::setCursor(31, 80);
 			this->renderThreeDigitNumeric(this->gameOverScreenVars.score);
-			PD::setCursor(92, 71);
+			PD::setCursor(92, 80);
 			this->renderThreeDigitNumeric(this->gameOverScreenVars.highScore);
 
-			PD::setColor(6);
-			PD::drawFastHLine(7, 67, 96);
+			PD::setColor(5);
+			PD::drawFastHLine(7, 77, 96);
 			PD::setColor(7);
 
 			break;
