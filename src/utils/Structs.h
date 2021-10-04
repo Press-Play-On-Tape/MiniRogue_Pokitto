@@ -55,6 +55,7 @@ struct FightMonsterScreenVariables {
     uint8_t ice = 0;
     uint8_t monsterPositionInc = 0;
     uint8_t monsterPosition = 0;
+    int8_t xDeath = -31;
 
     bool dice_Retain[4];
     bool poison = false;
@@ -78,6 +79,7 @@ struct FightMonsterScreenVariables {
         this->diceMonster = 0;
         this->ice = 0;
         this->poison = false;
+        this->xDeath = -31;
 
     }
 
@@ -359,14 +361,17 @@ struct GameStats {
 
                 playerStats.decFood(1);
                 this->room = 0;
+                this->monsterDefeated = false;
+                this->level++;
+                this->selectedCard = 0;
 
-                if (playerStats.food >= 0) {
+                // if (playerStats.food >= 0) {
                     
-                    this->level++;
-                    this->selectedCard = 0;
-                    this->monsterDefeated = false;
+                //     this->level++;
+                //     this->selectedCard = 0;
+                //     this->monsterDefeated = false;
 
-                }
+                // }
 
             }
 

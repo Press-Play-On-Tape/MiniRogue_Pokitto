@@ -309,6 +309,7 @@ void Game::fightMonster() {
 					this->playTheme(this->gameStats.getAreaId());
 					
 				}
+
 			}
 			
 			if (this->counter < FLASH_COUNTER) {
@@ -462,6 +463,12 @@ void Game::renderFightMonster() {
 
 		case FightMonster_ViewState::MonsterDead:
 		case FightMonster_ViewState::MonsterDead_Wait:
+
+			PD::drawBitmap(11, this->counter - 31, Images::Monster_Death_Background);
+			PD::setColor(8);
+			if (this->counter > 31) {
+				PD::fillRect(11, 0, 88, this->counter - 31);
+			}
 			break;
 
 		default:

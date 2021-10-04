@@ -35,8 +35,8 @@ void Game::renderLargeSpinningCard(int8_t x, int8_t y, uint8_t i) {
 void Game::renderMessageBox(uint8_t x, uint8_t y, uint8_t w, uint8_t h) {
 
     PD::setColor(0);
-    PD::fillRect(x + 1, y, w - 2, h - 1);
-    PD::fillRect(x, y + 1, w, h - 3);
+    PD::fillRect(x + 2, y + 1, w - 4, h - 3);
+    PD::fillRect(x + 1, y + 2, w - 2, h - 5);
     PD::setColor(9);
     PD::drawFastHLine(x + 3, y + 2, w - 6);
     PD::drawFastHLine(x + 3, y + h - 3, w - 6);

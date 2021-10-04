@@ -259,9 +259,9 @@ void Game::merchant() {
 
 			case 0:
 				PD::setCursor(27, 29);
-				PD::print("   You need");
+				PD::print("    You need");
 				PD::setCursor(27, 37);
-				PD::print("  more gold!");
+				PD::print("   more gold!");
 				break;
 
 			case 1:

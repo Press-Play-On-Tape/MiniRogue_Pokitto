@@ -11,5 +11,6 @@ namespace Images {
     #include "Monster_Stats.h"
     #include "Monster_Items.h"
     #include "Monster_Item_Highlight.h"
+    #include "Monster_Death_Background.h"
 
 };

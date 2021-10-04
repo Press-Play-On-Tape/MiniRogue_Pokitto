@@ -71,7 +71,7 @@ void Game::gameOver() {
 
 	// Clear scores ..
 
-	if (PC::buttons.pressed(BTN_UP) && PC::buttons.pressed(BTN_DOWN)) {
+	if (PC::buttons.pressed(BTN_C) || PC::buttons.repeat(BTN_C, 1)) {
 
 		this->gameOverScreenVars.clearScores++;
 

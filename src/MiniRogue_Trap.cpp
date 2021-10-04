@@ -105,21 +105,21 @@ void Game::trap() {
 
 		case Trap_ViewState::RollDice:
 
-			if (counter < Trap_NumberOfCardsInFlip - 1) {
+			if (this->counter < Trap_NumberOfCardsInFlip - 1) {
 
 				this->trapScreenVars.dice = random(1, 7);
-				counter++;
+				this->counter++;
 
 			}
 			else {
 
 				switch (this->trapScreenVars.dice) {
 
-					case 1: playerStats.decFood(1);       break;
-					case 2: playerStats.decGold(1);       break;
-					case 3: playerStats.decArmour(1);     break;
-					case 4: playerStats.decHP(1);         break;
-					case 5: if (playerStats.xp > 1)       playerStats.xp--;       break;
+					case 1: if (this->playerStats.food > 0) 	this->playerStats.decFood(1);       break;
+					case 2: this->playerStats.decGold(1);       break;
+					case 3: this->playerStats.decArmour(1);     break;
+					case 4: this->playerStats.decHP(1);         break;
+					case 5: if (this->playerStats.xp > 1)       this->playerStats.xp--;      		break;
 
 					case 6: 
 

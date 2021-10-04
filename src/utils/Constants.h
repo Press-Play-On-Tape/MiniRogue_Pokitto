@@ -62,7 +62,9 @@ enum class Merchant_ViewState : uint8_t {
 enum class ShowCards_ViewState : uint8_t {
     DealCards,
     PlayCard,
-    PlayerDead
+    PlayerDead,
+    NoFood_OK,
+    NoFood_Dead
 };
 
 enum class Resting_ViewState : uint8_t {
