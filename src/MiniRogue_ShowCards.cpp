@@ -36,12 +36,26 @@ void Game::showCards_Init() {
 
 		}
 
-		if (this->playerStats.food == STARVED_TO_DEATH) {
+		if (this->playerStats.food == STARVED_TO_DEATH && gameStats.room == 0 && gameStats.level > 0) {
 
   			this->showCardsScreenVars.displayCard = CARD_SHOW_ALL;
-			this->showCardsScreenVars.viewState = ShowCards_ViewState::PlayerDead;
-			playerStats.food = 0;
-			gameStats.room = 0;
+
+			if (this->playerStats.hp > 3) {
+
+				this->playerStats.hp = this->playerStats.hp - 3;
+				this->showCardsScreenVars.viewState = ShowCards_ViewState::NoFood_OK;
+				this->playerStats.food = 0;
+
+			}
+			else {
+
+				this->gameStats.room = 0;
+				this->playSoundEffect(SoundEffect::EvilLaugh);
+				this->playerStats.hp = 0;
+				this->playerStats.food = 0;
+				this->showCardsScreenVars.viewState = ShowCards_ViewState::NoFood_Dead;
+
+			}
 
 		}
 		else {
@@ -61,8 +75,10 @@ void Game::showCards_Init() {
 
 	this->gameState = GameState::ShowCards; 
 
-// this->cards[0] = GameState::Trap_Init;//SJH SJH SJH
-// this->playerStats.hp = 1;//SJH
+// this->cards[0] = GameState::Treasure_Init;//SJH SJH SJH
+// this->playerStats.hp = 80;//SJH
+// this->playerStats.xp = 80;//SJH
+// this->playerStats.armour = 20;//SJH
 // this->playerStats.items[3]++;
 
 
@@ -105,7 +121,15 @@ void Game::showCards() {
 
 			break;
 
-		case ShowCards_ViewState::PlayerDead:
+		case ShowCards_ViewState::NoFood_OK:
+
+      		if (PC::buttons.pressed(BTN_A)) { 
+        		this->showCardsScreenVars.viewState = ShowCards_ViewState::PlayCard;
+			}
+
+			break;
+
+		case ShowCards_ViewState::NoFood_Dead:
 
       		if (PC::buttons.pressed(BTN_A)) { 
         		this->gameState = GameState::GameOver_Init;
@@ -125,7 +149,7 @@ void Game::showCards() {
 	// Display area names ..
 
 	PD::setColor(7);
-	PD::setCursor(11, 0);
+	PD::setCursor(2, 0);
 
 	PD::print("L");
 	PD::print(this->gameStats.getAreaId() + 1);
@@ -165,7 +189,7 @@ void Game::showCards() {
 
 	// Player statistics ..
 
-	const FlashSettings settings = ((showCardsScreenVars.viewState == ShowCards_ViewState::PlayerDead) ? FlashSettings::FlashFood : FlashSettings::None);
+	const FlashSettings settings = ((showCardsScreenVars.viewState == ShowCards_ViewState::NoFood_OK || showCardsScreenVars.viewState == ShowCards_ViewState::NoFood_Dead) ? FlashSettings::FlashHP : FlashSettings::None);
 
 	this->renderPlayerStatistics(true, settings);
 
@@ -221,6 +245,35 @@ void Game::showCards() {
 	}
 
 	if (this->counter > 0 && this->showCardsScreenVars.displayCard == CARD_SHOW_ALL) this->counter--;
+
+
+	// Messages?
+
+	switch (this->showCardsScreenVars.viewState) {
+
+		case ShowCards_ViewState::NoFood_OK:
+			this->renderMessageBox(5, 20, 100, 34);
+			PD::setCursor(11, 26);
+			PD::print("You completed the level");
+			PD::setCursor(11, 34);
+			PD::print("with no food left, lose");
+			PD::setCursor(35, 42);
+			PD::print("3 HP points.");
+			break;
+
+		case ShowCards_ViewState::NoFood_Dead:
+			this->renderMessageBox(5, 20, 100, 34);
+			PD::setCursor(11, 26);
+			PD::print("You completed the level");
+			PD::setCursor(12, 34);
+			PD::print("with no food left, lost");
+			PD::setCursor(16, 42);
+			PD::print("3 HP points and died.");
+			break;
+
+		default: break;
+
+	}
 
 
 	// Are we dead?
